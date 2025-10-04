@@ -1,6 +1,7 @@
 # Edit following two lines to set component requirements (see docs)
 set(COMPONENT_REQUIRES )
 set(COMPONENT_PRIV_REQUIRES )
+set(COMPONENT_ADD_INCLUDEDIRS "")
 
    set(COMPONENT_SRCS "main.c" 
                       "max30102/i2c_api.c" 
@@ -11,6 +12,8 @@ set(COMPONENT_PRIV_REQUIRES )
                       "wifi_sta/wifi_sta.c"
                       "http_client/http_client.c"
                       "emg/emg.c"
+                      "sntp/sntp.c"
+                      "oled/oled.c"
                       INCLUDE_DIRS "."
                       REQUIRES mpu6050)
 

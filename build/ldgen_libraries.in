@@ -174,3 +174,4 @@ $<TARGET_FILE:__idf_tsys01>
 $<TARGET_FILE:__idf_ultrasonic>
 $<TARGET_FILE:__idf_veml7700>
 $<TARGET_FILE:__idf_wiegand>
+$<TARGET_FILE:__idf_ssd1306>

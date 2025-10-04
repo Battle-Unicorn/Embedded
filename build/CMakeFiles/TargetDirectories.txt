@@ -1481,3 +1481,10 @@ C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/wiegand/
 C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/wiegand/CMakeFiles/install.dir
 C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/wiegand/CMakeFiles/install/local.dir
 C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/wiegand/CMakeFiles/install/strip.dir
+C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/ssd1306/CMakeFiles/__idf_ssd1306.dir
+C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/ssd1306/CMakeFiles/edit_cache.dir
+C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/ssd1306/CMakeFiles/rebuild_cache.dir
+C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/ssd1306/CMakeFiles/list_install_components.dir
+C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/ssd1306/CMakeFiles/install.dir
+C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/ssd1306/CMakeFiles/install/local.dir
+C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/ssd1306/CMakeFiles/install/strip.dir

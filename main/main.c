@@ -9,6 +9,8 @@
 
 #include "esp_netif.h"
 #include "esp_netif_types.h"
+#include "sntp/sntp.h"
+#include "oled/oled.h"
 
 void app_main(void) {
     esp_err_t ret;
@@ -66,4 +68,16 @@ void app_main(void) {
         
         vTaskDelay(pdMS_TO_TICKS(1000)); // Check every second
     }
+    
+    // Initialize SNTP
+    sntp_time_init();
+    if (!sntp_wait_for_sync(10000)) { // Wait up to 10 seconds
+		ESP_LOGW("MAIN", "SNTP time sync failed or timed out");
+	} else {
+		ESP_LOGI("MAIN", "SNTP time synchronized successfully");
+	}
+	
+	//print time
+	ESP_LOGI("MAIN", "Current time: %s", sntp_get_time_string());
+	oled_task_start();
 }
