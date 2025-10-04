@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <math.h> // for isnan()
+#include "esp_log.h"
 
 // =============== TASK HANDLES ===============
 TaskHandle_t sensor_reader_handle = NULL;
@@ -74,7 +75,7 @@ double auto_correlationated_data[BUFFER_SIZE];
 // Sampling delay (in milliseconds)
 #define SAMPLE_DELAY_MS 10
 
-#define DEBUG true
+#define DEBUG false
 
 // =============== FUNCTION DECLARATIONS ===============
 void sensor_data_reader(void *pvParameters);
@@ -120,10 +121,10 @@ void sensor_data_reader(void *pvParameters)
         int heart_rate_ir = calculate_heart_rate(ir_data_buffer, &r0_autocorrelation, auto_correlationated_data);
 
         // ---- Print data summary ----
-        printf("\n");
-        printf("HEART_RATE: %d bpm\n", heart_rate_ir);
-        printf("Correlation: %f\n", pearson_correlation);
-        printf("Temperature: %f\n", temperature);
+        //remake printf to ESP_LOGI hr, correlation, temperature
+		ESP_LOGI("SENSOR", "HR: %d bpm, Corr: %f, Temp: %f C", heart_rate_ir, pearson_correlation, temperature);
+        
+        	
 
         // If IR and RED signals are strongly correlated, compute SpO2
         if (pearson_correlation >= 0.7)

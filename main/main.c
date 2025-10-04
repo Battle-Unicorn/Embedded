@@ -1,6 +1,7 @@
 #include "max30102/max30102_config.h"
 #include "nvs_flash.h"
 #include "esp_log.h"
+#include "mpu6050/mpu_utils.h"
 
 extern max_config max30102_configuration;
 
@@ -20,5 +21,6 @@ void app_main(void)
     ESP_LOGI("MAIN", "NVS initialized successfully");
 
     // Start the MAX30102 sensor task
-    max30102_task_start();
+    //max30102_task_start();
+    mpu_task_start();
 }
