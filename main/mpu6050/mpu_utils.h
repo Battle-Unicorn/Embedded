@@ -2,7 +2,7 @@
  * mpu_utils.h
  *
  *  Created on: 4 paź 2025
- *      Author: lenovo
+ *      Author: majorBien
  */
 
 #ifndef MAIN_MPU6050_MPU_UTILS_H_

@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "oximetro-hr",
-    "project_version":    "68a90b3-dirty",
+    "project_version":    "93a9ab5-dirty",
     "project_path":       "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter",
     "idf_path":           "C:/Espressif/frameworks/esp-idf-v5.4",
     "build_dir":          "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build",
@@ -1855,7 +1855,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/esp-idf/main/libmain.a",
-            "sources": [ "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/main.c", "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/max30102/i2c_api.c", "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/max30102/max30102_api.c", "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/max30102/algorithm.c", "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/max30102/max30102_config.c", "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/mpu6050/mpu_utils.c" ],
+            "sources": [ "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/main.c", "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/max30102/i2c_api.c", "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/max30102/max30102_api.c", "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/max30102/algorithm.c", "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/max30102/max30102_config.c", "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/mpu6050/mpu_utils.c", "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/emg/emg.c" ],
             "include_dirs": [ "." ]
         },
         "max1704x": {
