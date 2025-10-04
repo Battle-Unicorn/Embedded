@@ -5,12 +5,7 @@
  *      Author: majorBien
  */
 
-/*
- * mpu_utils.c
- *
- *  Created on: 4 paź 2025
- *      Author: majorBien
- */
+
 
 #include "mpu_utils.h"
 #include <stdio.h>

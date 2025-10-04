@@ -98,7 +98,7 @@ static void oled_display_task(void *pvParameters)
     
     // Display header
     ssd1306_display_text(&dev, 0, "SMART SLEEP   ", 15, false);
-    ssd1306_display_text(&dev, 1, "-----------------", 14, false);
+    ssd1306_display_text(&dev, 1, "--------------------", 14, false);
     
     while(1) {
         // Update and display current data
