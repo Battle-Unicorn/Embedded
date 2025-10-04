@@ -52,10 +52,10 @@ static void mpu6050_task(void *pvParameters)
         ESP_ERROR_CHECK(mpu6050_get_temperature(&dev, &temp));
         ESP_ERROR_CHECK(mpu6050_get_motion(&dev, &accel, &rotation));
 
-        ESP_LOGI(TAG, "**********************************************************************");
-        ESP_LOGI(TAG, "Acceleration: x=%.4f   y=%.4f   z=%.4f", accel.x, accel.y, accel.z);
-        ESP_LOGI(TAG, "Rotation:     x=%.4f   y=%.4f   z=%.4f", rotation.x, rotation.y, rotation.z);
-        ESP_LOGI(TAG, "Temperature:  %.1f", temp);
+        //ESP_LOGI(TAG, "**********************************************************************");
+        //ESP_LOGI(TAG, "Acceleration: x=%.4f   y=%.4f   z=%.4f", accel.x, accel.y, accel.z);
+        //ESP_LOGI(TAG, "Rotation:     x=%.4f   y=%.4f   z=%.4f", rotation.x, rotation.y, rotation.z);
+        //ESP_LOGI(TAG, "Temperature:  %.1f", temp);
 
         vTaskDelay(pdMS_TO_TICKS(100));
     }

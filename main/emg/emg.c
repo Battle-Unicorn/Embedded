@@ -99,6 +99,10 @@ float moving_average(float new_sample) {
     return sum / MOVING_AVG_SIZE;
 }
 
+float raw_to_mv(int raw_value) {
+    return raw_value * (3300.0f / 4095.0f);  
+}
+
 static void emg_task(void *pvParameters) {
     ESP_LOGI(TAG, "EMG task started");
     
@@ -143,8 +147,8 @@ static void emg_task(void *pvParameters) {
         // Display values every second
         sample_count++;
         if (xTaskGetTickCount() - last_log_time >= pdMS_TO_TICKS(1000)) {
-            ESP_LOGI(TAG, "Raw: %d, DC_removed: %.1f, Filtered: %.2f, Envelope: %.2f", 
-                    raw_sample, dc_removed, filtered, current_envelope);
+            //ESP_LOGI(TAG, "Raw: %d, DC_removed: %.1f, Filtered: %.2f, Envelope: %.2f, mV: %.2f",
+			//		 raw_sample, dc_removed, filtered, current_envelope, raw_to_mv(current_envelope));
             last_log_time = xTaskGetTickCount();
         }
     }
