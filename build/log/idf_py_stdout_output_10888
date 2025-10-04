@@ -1,0 +1,59 @@
+H��Wk���� v3.1
+I (36�ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6596
+load:0x40078000,len:18036
+load:0x40080400,len:4
+ho 8 tail 4 room 4
+load:0x40080404,len:4284
+entry 0x400806e8
+[0;32mI (31) boot: ESP-IDF v5.4-dirty 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Sep 30 2025 22:23:40[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (33) boot: chip revision: v3.1[0m
+[0;32mI (36) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (39) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (43) boot.esp32: SPI Flash Size : 4MB[0m
+[0;32mI (47) boot: Enabling RNG early entropy source...[0m
+[0;32mI (51) boot: Partition Table:[0m
+[0;32mI (54) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (60) boot:  0 nvs              WiFi data        01 02 00011000 00006000[0m
+[0;32mI (66) boot:  1 phy_init         RF data          01 01 00017000 00001000[0m
+[0;32mI (73) boot:  2 factory          factory app      00 00 00020000 00177000[0m
+[0;32mI (80) boot: End of partition table[0m
+[0;32mI (83) esp_image: segment 0: paddr=00020020 vaddr=3f400020 size=0b4f0h ( 46320) map[0m
+[0;32mI (107) esp_image: segment 1: paddr=0002b518 vaddr=3ff80000 size=0001ch (    28) load[0m
+[0;32mI (107) esp_image: segment 2: paddr=0002b53c vaddr=3ffb0000 size=02414h (  9236) load[0m
+[0;32mI (114) esp_image: segment 3: paddr=0002d958 vaddr=40080000 size=026c0h (  9920) load[0m
+[0;32mI (122) esp_image: segment 4: paddr=00030020 vaddr=400d0020 size=1785ch ( 96348) map[0m
+[0;32mI (159) esp_image: segment 5: paddr=00047884 vaddr=400826c0 size=0ba6ch ( 47724) load[0m
+[0;32mI (187) boot: Loaded app from partition at offset 0x20000[0m
+[0;32mI (187) boot: Disabling RNG early entropy source...[0m
+[0;32mI (198) cpu_start: Multicore app[0m
+[0;32mI (206) cpu_start: Pro cpu start user code[0m
+[0;32mI (206) cpu_start: cpu freq: 240000000 Hz[0m
+[0;32mI (206) app_init: Application information:[0m
+[0;32mI (209) app_init: Project name:     oximetro-hr[0m
+[0;32mI (214) app_init: App version:      1[0m
+[0;32mI (219) app_init: Compile time:     Sep 30 2025 22:21:56[0m
+[0;32mI (225) app_init: ELF file SHA256:  edcd83ea5...[0m
+[0;32mI (230) app_init: ESP-IDF:          v5.4-dirty[0m
+[0;32mI (235) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (240) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (245) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (250) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (257) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (263) heap_init: At 3FFB3EA8 len 0002C158 (176 KiB): DRAM[0m
+[0;32mI (269) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (275) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (282) heap_init: At 4008E12C len 00011ED4 (71 KiB): IRAM[0m
+[0;32mI (289) spi_flash: detected chip: generic[0m
+[0;32mI (293) spi_flash: flash io: dio[0m
+[0;33mW (297) i2c: This driver is an old driver, please migrate your application code to adapt `driver/i2c_master.h`[0m
+[0;32mI (308) main_task: Started on CPU0[0m
+[0;32mI (318) main_task: Calling app_main()[0m
+[0;32mI (318) main_task: Returned from app_main()[0m

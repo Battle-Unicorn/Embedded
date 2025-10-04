@@ -1,0 +1,271 @@
+ͥ��� v3.1
+[0;32mI (36) boot.esp32: SPets Jul 29 2019 12:21:46[0m
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6596
+load:0x40078000,len:18036
+load:0x40080400,len:4
+ho 8 tail 4 room 4
+load:0x40080404,len:4284
+entry 0x400806e8
+[0;32mI (31) boot: ESP-IDF v5.4-dirty 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Sep 30 2025 22:23:40[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (33) boot: chip revision: v3.1[0m
+[0;32mI (36) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (39) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (43) boot.esp32: SPI Flash Size : 4MB[0m
+[0;32mI (47) boot: Enabling RNG early entropy source...[0m
+[0;32mI (51) boot: Partition Table:[0m
+[0;32mI (54) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (60) boot:  0 nvs              WiFi data        01 02 00011000 00006000[0m
+[0;32mI (66) boot:  1 phy_init         RF data          01 01 00017000 00001000[0m
+[0;32mI (73) boot:  2 factory          factory app      00 00 00020000 00177000[0m
+[0;32mI (80) boot: End of partition table[0m
+[0;32mI (83) esp_image: segment 0: paddr=00020020 vaddr=3f400020 size=0b610h ( 46608) map[0m
+[0;32mI (107) esp_image: segment 1: paddr=0002b638 vaddr=3ff80000 size=0001ch (    28) load[0m
+[0;32mI (107) esp_image: segment 2: paddr=0002b65c vaddr=3ffb0000 size=02414h (  9236) load[0m
+[0;32mI (114) esp_image: segment 3: paddr=0002da78 vaddr=40080000 size=025a0h (  9632) load[0m
+[0;32mI (122) esp_image: segment 4: paddr=00030020 vaddr=400d0020 size=17c0ch ( 97292) map[0m
+[0;32mI (160) esp_image: segment 5: paddr=00047c34 vaddr=400825a0 size=0bb8ch ( 48012) load[0m
+[0;32mI (188) boot: Loaded app from partition at offset 0x20000[0m
+[0;32mI (188) boot: Disabling RNG early entropy source...[0m
+[0;32mI (198) cpu_start: Multicore app[0m
+[0;32mI (207) cpu_start: Pro cpu start user code[0m
+[0;32mI (207) cpu_start: cpu freq: 240000000 Hz[0m
+[0;32mI (207) app_init: Application information:[0m
+[0;32mI (210) app_init: Project name:     oximetro-hr[0m
+[0;32mI (215) app_init: App version:      1[0m
+[0;32mI (219) app_init: Compile time:     Sep 30 2025 22:21:56[0m
+[0;32mI (225) app_init: ELF file SHA256:  687340532...[0m
+[0;32mI (230) app_init: ESP-IDF:          v5.4-dirty[0m
+[0;32mI (236) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (240) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (245) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (250) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (258) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (263) heap_init: At 3FFB3EA8 len 0002C158 (176 KiB): DRAM[0m
+[0;32mI (270) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (276) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (282) heap_init: At 4008E12C len 00011ED4 (71 KiB): IRAM[0m
+[0;32mI (290) spi_flash: detected chip: generic[0m
+[0;32mI (293) spi_flash: flash io: dio[0m
+[0;33mW (297) i2c: This driver is an old driver, please migrate your application code to adapt `driver/i2c_master.h`[0m
+[0;32mI (308) main_task: Started on CPU0[0m
+[0;32mI (318) main_task: Calling app_main()[0m
+[0;32mI (318) main_task: Returned from app_main()[0m
+[0;32mI (5538) Oximeter: Raw IR mean: 160635122.00 std: 92021023.31  RED mean: 1079224513.50 std: 618241535.88[0m
+[0;32mI (5538) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (5538) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (5548) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (10668) Oximeter: Raw IR mean: 479415026.00 std: 92021023.31  RED mean: -1074025918.50 std: 618241535.88[0m
+[0;32mI (10668) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (10668) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (10678) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (15798) Oximeter: Raw IR mean: 798194930.00 std: 92021023.31  RED mean: 1067690945.50 std: 618241535.88[0m
+[0;32mI (15798) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (15798) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (15808) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (20928) Oximeter: Raw IR mean: 1116974834.00 std: 92021023.31  RED mean: -1052005054.50 std: 673727860.64[0m
+[0;32mI (20928) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (20928) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (20938) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (26058) Oximeter: Raw IR mean: 1435754738.00 std: 92021023.31  RED mean: 1056157377.50 std: 618241535.88[0m
+[0;32mI (26058) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (26058) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (26068) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (31188) Oximeter: Raw IR mean: 1754534642.00 std: 92021023.31  RED mean: -1063538622.50 std: 673727860.64[0m
+[0;32mI (31188) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (31188) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (31198) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (36318) Oximeter: Raw IR mean: 932463858.00 std: 1827502741.63  RED mean: 1044623809.50 std: 618241535.88[0m
+[0;32mI (36318) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (36318) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (36328) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (41448) Oximeter: Raw IR mean: -1902872846.00 std: 92021023.31  RED mean: -1041517758.50 std: 724200897.79[0m
+[0;32mI (41448) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (41448) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (41458) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (46578) Oximeter: Raw IR mean: -1581555502.48 std: 94997483.93  RED mean: 1027600000.52 std: 611869305.77[0m
+[0;32mI (46578) Oximeter: Pearson correlation: -1.000000[0m
+[0;32mI (46588) Oximeter: HEART_RATE: 214[0m
+[0;33mW (46588) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (51708) Oximeter: Raw IR mean: -1257579889.00 std: 92021023.31  RED mean: -1002674625.50 std: 813754011.10[0m
+[0;32mI (51708) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (51708) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (51718) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (56838) Oximeter: Raw IR mean: -938799985.61 std: 92021022.32  RED mean: 1004824510.50 std: 618241535.88[0m
+[0;32mI (56838) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (56838) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (56848) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (61968) Oximeter: Raw IR mean: -620020791.72 std: 92020119.55  RED mean: -1014208193.50 std: 813754011.10[0m
+[0;32mI (61968) Oximeter: Pearson correlation: 0.000000[0m
+[0;32mI (61978) Oximeter: HEART_RATE: 214[0m
+[0;33mW (61978) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (67098) Oximeter: Raw IR mean: -301250727.00 std: 92017328.38  RED mean: 993290942.50 std: 618241535.88[0m
+[0;32mI (67098) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (67098) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (67108) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (72228) Oximeter: Raw IR mean: 17516377.00 std: 92017328.38  RED mean: -992187329.50 std: 854029584.18[0m
+[0;32mI (72228) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (72228) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (72238) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (77358) Oximeter: Raw IR mean: 336283481.00 std: 92017328.38  RED mean: 981757374.50 std: 618241535.88[0m
+[0;32mI (77358) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (77358) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (77368) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (82488) Oximeter: Raw IR mean: 655050585.00 std: 92017328.38  RED mean: -970166465.50 std: 891856797.56[0m
+[0;32mI (82488) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (82488) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (82498) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (87618) Oximeter: Raw IR mean: 972805977.00 std: 90979118.60  RED mean: 963426365.28 std: 611266062.69[0m
+[0;32mI (87618) Oximeter: Pearson correlation: 1.000000[0m
+[0;32mI (87628) Oximeter: HEART_RATE: 214[0m
+[0;32mI (87628) Oximeter: SPO2: 0.00%[0m
+[0;32mI (92748) Oximeter: Raw IR mean: 1290094425.00 std: 92017328.38  RED mean: -964877764.50 std: 927535250.38[0m
+[0;32mI (92748) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (92748) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (92758) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (97878) Oximeter: Raw IR mean: 1608861529.00 std: 92017328.38  RED mean: 941958075.50 std: 618241535.88[0m
+[0;32mI (97878) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (97878) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (97888) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (103008) Oximeter: Raw IR mean: 1927628633.00 std: 92017328.38  RED mean: -942856900.50 std: 961304223.79[0m
+[0;32mI (103008) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (103008) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (103018) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (108138) Oximeter: Raw IR mean: -1243265191.00 std: 1615592893.79  RED mean: 930424507.50 std: 618241535.88[0m
+[0;32mI (108138) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (108138) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (108148) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (113268) Oximeter: Raw IR mean: -1729804455.00 std: 92017328.38  RED mean: -920836036.50 std: 993358473.72[0m
+[0;32mI (113268) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (113268) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (113278) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (118398) Oximeter: Raw IR mean: -1411037351.00 std: 92017328.38  RED mean: 918890939.50 std: 618241535.88[0m
+[0;32mI (118398) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (118398) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (118408) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (123528) Oximeter: Raw IR mean: -1092270247.00 std: 92017328.38  RED mean: -932369604.50 std: 993358473.72[0m
+[0;32mI (123528) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (123528) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (123538) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (128658) Oximeter: Raw IR mean: -773503143.00 std: 92017328.38  RED mean: 907357371.50 std: 618241535.88[0m
+[0;32mI (128658) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (128658) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (128668) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (133788) Oximeter: Raw IR mean: -454736039.00 std: 92017328.38  RED mean: -910348740.50 std: 1023859062.84[0m
+[0;32mI (133788) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (133788) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (133798) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (138918) Oximeter: Raw IR mean: -135968935.00 std: 92017328.38  RED mean: 895823803.50 std: 618241535.88[0m
+[0;32mI (138918) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (138918) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (138928) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (144048) Oximeter: Raw IR mean: 182798169.00 std: 92017328.38  RED mean: -888327876.50 std: 1052941014.71[0m
+[0;32mI (144048) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (144048) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (144058) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (149178) Oximeter: Raw IR mean: 499197365.98 std: 91829154.77  RED mean: 868342392.64 std: 616955471.22[0m
+[0;32mI (149178) Oximeter: Pearson correlation: 1.000000[0m
+[0;33mW (149188) Oximeter: HEART_RATE: invalid[0m
+[0;32mI (149188) Oximeter: SPO2: 0.00%[0m
+[0;32mI (154308) Oximeter: Raw IR mean: 817852859.55 std: 92018753.09  RED mean: -883039175.50 std: 1080718861.21[0m
+[0;32mI (154308) Oximeter: Pearson correlation: 0.000000[0m
+[0;32mI (154318) Oximeter: HEART_RATE: 214[0m
+[0;33mW (154318) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (159438) Oximeter: Raw IR mean: 1136627850.30 std: 92018347.27  RED mean: 856024504.50 std: 618241535.88[0m
+[0;32mI (159438) Oximeter: Pearson correlation: 0.000000[0m
+[0;32mI (159448) Oximeter: HEART_RATE: 214[0m
+[0;33mW (159448) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (164568) Oximeter: Raw IR mean: 1455395720.00 std: 92017328.38  RED mean: -861018311.50 std: 1107290752.31[0m
+[0;32mI (164568) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (164568) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (164578) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (169698) Oximeter: Raw IR mean: 1774162824.00 std: 92017328.38  RED mean: 844490936.50 std: 618241535.88[0m
+[0;32mI (169698) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (169698) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (169708) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (174828) Oximeter: Raw IR mean: 683645580.16 std: 1942519195.97  RED mean: -838997447.50 std: 1132741559.21[0m
+[0;32mI (174828) Oximeter: Pearson correlation: 0.000000[0m
+[0;32mI (174838) Oximeter: HEART_RATE: 214[0m
+[0;33mW (174838) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (179958) Oximeter: Raw IR mean: -1883260918.02 std: 92017847.08  RED mean: 832957368.50 std: 618241535.88[0m
+[0;32mI (179958) Oximeter: Pearson correlation: 0.000000[0m
+[0;32mI (179968) Oximeter: HEART_RATE: 214[0m
+[0;33mW (179968) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (185088) Oximeter: Raw IR mean: -1564493458.00 std: 92017328.38  RED mean: -816976583.50 std: 1157145257.26[0m
+[0;32mI (185088) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (185088) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (185098) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (190218) Oximeter: Raw IR mean: -1245726354.00 std: 92017328.38  RED mean: 821423800.50 std: 618241535.88[0m
+[0;32mI (190218) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (190218) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (190228) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (195348) Oximeter: Raw IR mean: -926956644.58 std: 92019902.12  RED mean: -828510151.50 std: 1157145257.26[0m
+[0;32mI (195348) Oximeter: Pearson correlation: 0.000000[0m
+[0;32mI (195358) Oximeter: HEART_RATE: 214[0m
+[0;33mW (195358) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (200478) Oximeter: Raw IR mean: -608182548.12 std: 92017493.23  RED mean: 809890232.50 std: 618241535.88[0m
+[0;32mI (200478) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (200488) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (200488) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (205608) Oximeter: Raw IR mean: -289415340.00 std: 92017328.38  RED mean: -806489287.50 std: 1180566783.15[0m
+[0;32mI (205608) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (205608) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (205618) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (210738) Oximeter: Raw IR mean: 29351764.00 std: 92017328.38  RED mean: 798356664.50 std: 618241535.88[0m
+[0;32mI (210738) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (210738) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (210748) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (215868) Oximeter: Raw IR mean: 346465108.00 std: 91057553.33  RED mean: -795579625.49 std: 1205033670.16[0m
+[0;32mI (215868) Oximeter: Pearson correlation: 1.000000[0m
+[0;32mI (215878) Oximeter: HEART_RATE: 214[0m
+[0;32mI (215878) Oximeter: SPO2: 94.85%[0m
+[0;32mI (220998) Oximeter: Raw IR mean: 664395604.00 std: 92017328.38  RED mean: 770090933.50 std: 618241535.88[0m
+[0;32mI (220998) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (220998) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (221008) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (226128) Oximeter: Raw IR mean: 983162708.00 std: 92017328.38  RED mean: -779179722.50 std: 1224686378.45[0m
+[0;32mI (226128) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (226128) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (226138) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (231258) Oximeter: Raw IR mean: 1301929812.00 std: 92017328.38  RED mean: 758557365.50 std: 618241535.88[0m
+[0;32mI (231258) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (231258) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (231268) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (236388) Oximeter: Raw IR mean: 1620696916.00 std: 92017328.38  RED mean: -757158858.50 std: 1245480926.61[0m
+[0;32mI (236388) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (236388) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (236398) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (241518) Oximeter: Raw IR mean: 1939464020.00 std: 92017328.38  RED mean: 747023797.50 std: 618241535.88[0m
+[0;32mI (241518) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (241518) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (241528) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (246648) Oximeter: Raw IR mean: -1365647532.00 std: 1503301419.77  RED mean: -735137994.50 std: 1265487980.26[0m
+[0;32mI (246648) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (246648) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (246658) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (251778) Oximeter: Raw IR mean: -1717969068.00 std: 92017328.38  RED mean: 735490229.50 std: 618241535.88[0m
+[0;32mI (251778) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (251778) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (251788) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (256908) Oximeter: Raw IR mean: -1399201964.00 std: 92017328.38  RED mean: -746671562.50 std: 1265487980.26[0m
+[0;32mI (256908) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (256908) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (256918) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (262038) Oximeter: Raw IR mean: -1080434860.00 std: 92017328.38  RED mean: 723956661.50 std: 618241535.88[0m
+[0;32mI (262038) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (262038) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (262048) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (267168) Oximeter: Raw IR mean: -761667756.00 std: 92017328.38  RED mean: -724650698.50 std: 1284744330.38[0m
+[0;32mI (267168) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (267168) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (267178) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m
+[0;32mI (272298) Oximeter: Raw IR mean: -442900652.00 std: 92017328.38  RED mean: 712423093.50 std: 618241535.88[0m
+[0;32mI (272298) Oximeter: Pearson correlation: 0.000000[0m
+[0;33mW (272298) Oximeter: HEART_RATE: invalid[0m
+[0;33mW (272308) Oximeter: Poor signal correlation; skipping SpO2 calculation[0m

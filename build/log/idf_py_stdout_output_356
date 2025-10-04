@@ -1,0 +1,583 @@
+�revision: v3.1
+[0;32mI (36) boot.esp32: S�ets Jul 29 2019 12:21:46[0m
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6596
+load:0x40078000,len:18036
+load:0x40080400,len:4
+ho 8 tail 4 room 4
+load:0x40080404,len:4284
+entry 0x400806e8
+[0;32mI (31) boot: ESP-IDF v5.4-dirty 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Sep 30 2025 22:23:40[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (33) boot: chip revision: v3.1[0m
+[0;32mI (36) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (39) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (43) boot.esp32: SPI Flash Size : 4MB[0m
+[0;32mI (47) boot: Enabling RNG early entropy source...[0m
+[0;32mI (51) boot: Partition Table:[0m
+[0;32mI (54) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (60) boot:  0 nvs              WiFi data        01 02 00011000 00006000[0m
+[0;32mI (66) boot:  1 phy_init         RF data          01 01 00017000 00001000[0m
+[0;32mI (73) boot:  2 factory          factory app      00 00 00020000 00177000[0m
+[0;32mI (80) boot: End of partition table[0m
+[0;32mI (83) esp_image: segment 0: paddr=00020020 vaddr=3f400020 size=0b5c0h ( 46528) map[0m
+[0;32mI (107) esp_image: segment 1: paddr=0002b5e8 vaddr=3ff80000 size=0001ch (    28) load[0m
+[0;32mI (107) esp_image: segment 2: paddr=0002b60c vaddr=3ffb0000 size=02414h (  9236) load[0m
+[0;32mI (114) esp_image: segment 3: paddr=0002da28 vaddr=40080000 size=025f0h (  9712) load[0m
+[0;32mI (122) esp_image: segment 4: paddr=00030020 vaddr=400d0020 size=17874h ( 96372) map[0m
+[0;32mI (159) esp_image: segment 5: paddr=0004789c vaddr=400825f0 size=0bb3ch ( 47932) load[0m
+[0;32mI (187) boot: Loaded app from partition at offset 0x20000[0m
+[0;32mI (188) boot: Disabling RNG early entropy source...[0m
+[0;32mI (198) cpu_start: Multicore app[0m
+[0;32mI (206) cpu_start: Pro cpu start user code[0m
+[0;32mI (206) cpu_start: cpu freq: 240000000 Hz[0m
+[0;32mI (206) app_init: Application information:[0m
+[0;32mI (209) app_init: Project name:     oximetro-hr[0m
+[0;32mI (214) app_init: App version:      1[0m
+[0;32mI (219) app_init: Compile time:     Sep 30 2025 22:21:56[0m
+[0;32mI (225) app_init: ELF file SHA256:  cf7370d12...[0m
+[0;32mI (230) app_init: ESP-IDF:          v5.4-dirty[0m
+[0;32mI (235) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (240) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (245) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (250) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (257) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (263) heap_init: At 3FFB3EA8 len 0002C158 (176 KiB): DRAM[0m
+[0;32mI (269) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (276) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (282) heap_init: At 4008E12C len 00011ED4 (71 KiB): IRAM[0m
+[0;32mI (290) spi_flash: detected chip: generic[0m
+[0;32mI (293) spi_flash: flash io: dio[0m
+[0;33mW (297) i2c: This driver is an old driver, please migrate your application code to adapt `driver/i2c_master.h`[0m
+[0;32mI (308) main_task: Started on CPU0[0m
+[0;32mI (318) main_task: Calling app_main()[0m
+[0;32mI (318) main_task: Returned from app_main()[0m
+[0;32mI (5538) Oximeter: Pearson correlation: 1.000000[0m
+[0;33mW (5538) Oximeter: HEART_RATE: invalid[0m
+[0;32mI (5538) Oximeter: SPO2: 80.14%[0m
+[0;32mI (5538) Oximeter: IR: -19904, RED: -133760, AutoCorr: 0.000000[0m
+[0;32mI (5548) Oximeter: IR: -19283, RED: -129594, AutoCorr: 0.000000[0m
+[0;32mI (5558) Oximeter: IR: -18663, RED: -125429, AutoCorr: 0.000000[0m
+[0;32mI (5558) Oximeter: IR: -18043, RED: -121264, AutoCorr: 0.000000[0m
+[0;32mI (5568) Oximeter: IR: -17423, RED: -117099, AutoCorr: 0.000000[0m
+[0;32mI (5568) Oximeter: IR: -16802, RED: -112934, AutoCorr: 0.000000[0m
+[0;32mI (5578) Oximeter: IR: -16182, RED: -108769, AutoCorr: 0.000000[0m
+[0;32mI (5588) Oximeter: IR: -15562, RED: -104604, AutoCorr: -0.022470[0m
+[0;32mI (5588) Oximeter: IR: -14942, RED: -100439, AutoCorr: -0.022998[0m
+[0;32mI (5598) Oximeter: IR: -14321, RED: -96274, AutoCorr: -0.023534[0m
+[0;32mI (5608) Oximeter: IR: -13701, RED: -92109, AutoCorr: -0.024078[0m
+[0;32mI (5608) Oximeter: IR: -13081, RED: -87944, AutoCorr: -0.024631[0m
+[0;32mI (5618) Oximeter: IR: -12461, RED: -83779, AutoCorr: -0.025193[0m
+[0;32mI (5628) Oximeter: IR: -11840, RED: -79614, AutoCorr: -0.025764[0m
+[0;32mI (5628) Oximeter: IR: -11220, RED: -75449, AutoCorr: -0.026344[0m
+[0;32mI (5638) Oximeter: IR: -10600, RED: -71284, AutoCorr: -0.026933[0m
+[0;32mI (5648) Oximeter: IR: -9980, RED: -67119, AutoCorr: -0.027531[0m
+[0;32mI (5648) Oximeter: IR: -9359, RED: -62954, AutoCorr: -0.028139[0m
+[0;32mI (5658) Oximeter: IR: -8739, RED: -58789, AutoCorr: -0.028757[0m
+[0;32mI (5668) Oximeter: IR: -8119, RED: -54624, AutoCorr: -0.029385[0m
+[0;32mI (5668) Oximeter: IR: -7499, RED: -50459, AutoCorr: -0.030023[0m
+[0;32mI (5678) Oximeter: IR: -6878, RED: -46294, AutoCorr: -0.001571[0m
+[0;32mI (5688) Oximeter: IR: -6258, RED: -42129, AutoCorr: -0.001649[0m
+[0;32mI (5688) Oximeter: IR: -5638, RED: -37964, AutoCorr: -0.001727[0m
+[0;32mI (5698) Oximeter: IR: -5018, RED: -33799, AutoCorr: -0.001804[0m
+[0;32mI (5708) Oximeter: IR: -4397, RED: -29634, AutoCorr: -0.001882[0m
+[0;32mI (5708) Oximeter: IR: -3777, RED: -25468, AutoCorr: -0.001959[0m
+[0;32mI (5718) Oximeter: IR: -3157, RED: -21303, AutoCorr: -0.002035[0m
+[0;32mI (5728) Oximeter: IR: -2537, RED: -17138, AutoCorr: -0.002110[0m
+[0;32mI (5728) Oximeter: IR: -1916, RED: -12973, AutoCorr: -0.002185[0m
+[0;32mI (5738) Oximeter: IR: -1296, RED: -8808, AutoCorr: -0.002259[0m
+[0;32mI (5748) Oximeter: IR: -676, RED: -4643, AutoCorr: -0.002332[0m
+[0;32mI (5748) Oximeter: IR: -56, RED: -478, AutoCorr: -0.002403[0m
+[0;32mI (5758) Oximeter: IR: 564, RED: 3686, AutoCorr: -0.002474[0m
+[0;32mI (5758) Oximeter: IR: 1184, RED: 7851, AutoCorr: -0.002544[0m
+[0;32mI (5768) Oximeter: IR: 1804, RED: 12016, AutoCorr: -0.002611[0m
+[0;32mI (5778) Oximeter: IR: 2388, RED: 16181, AutoCorr: -0.002677[0m
+[0;32mI (5778) Oximeter: IR: 3009, RED: 20346, AutoCorr: -0.002742[0m
+[0;32mI (5788) Oximeter: IR: 3629, RED: 24511, AutoCorr: -0.002805[0m
+[0;32mI (5798) Oximeter: IR: 4249, RED: 28676, AutoCorr: -0.002866[0m
+[0;32mI (5798) Oximeter: IR: 4869, RED: 32841, AutoCorr: -0.002924[0m
+[0;32mI (5808) Oximeter: IR: 5490, RED: 37006, AutoCorr: -0.002980[0m
+[0;32mI (5808) Oximeter: IR: 6110, RED: 41171, AutoCorr: -0.003033[0m
+[0;32mI (5818) Oximeter: IR: 6730, RED: 45336, AutoCorr: -0.003084[0m
+[0;32mI (5828) Oximeter: IR: 7350, RED: 49501, AutoCorr: -0.003132[0m
+[0;32mI (5828) Oximeter: IR: 7971, RED: 53666, AutoCorr: -0.003177[0m
+[0;32mI (5838) Oximeter: IR: 8591, RED: 57831, AutoCorr: -0.003218[0m
+[0;32mI (5848) Oximeter: IR: 9211, RED: 61996, AutoCorr: -0.003255[0m
+[0;32mI (5848) Oximeter: IR: 9831, RED: 66161, AutoCorr: -0.003289[0m
+[0;32mI (5858) Oximeter: IR: 10452, RED: 70326, AutoCorr: -0.003320[0m
+[0;32mI (5868) Oximeter: IR: 11072, RED: 74491, AutoCorr: -0.003345[0m
+[0;32mI (5868) Oximeter: IR: 11692, RED: 78657, AutoCorr: 0.000000[0m
+[0;32mI (5878) Oximeter: IR: 12312, RED: 82822, AutoCorr: 0.000000[0m
+[0;32mI (5878) Oximeter: IR: 12933, RED: 86987, AutoCorr: 0.000000[0m
+[0;32mI (5888) Oximeter: IR: 13553, RED: 91152, AutoCorr: 0.000000[0m
+[0;32mI (5898) Oximeter: IR: 14173, RED: 95317, AutoCorr: 0.000000[0m
+[0;32mI (5898) Oximeter: IR: 14793, RED: 99482, AutoCorr: 0.000000[0m
+[0;32mI (5908) Oximeter: IR: 15414, RED: 103647, AutoCorr: 0.000000[0m
+[0;32mI (5918) Oximeter: IR: 16034, RED: 107812, AutoCorr: 0.000000[0m
+[0;32mI (5918) Oximeter: IR: 16654, RED: 111977, AutoCorr: 0.000000[0m
+[0;32mI (5928) Oximeter: IR: 17274, RED: 116142, AutoCorr: 0.000000[0m
+[0;32mI (5938) Oximeter: IR: 17895, RED: 120307, AutoCorr: 0.000000[0m
+[0;32mI (5938) Oximeter: IR: 18515, RED: 124472, AutoCorr: 0.000000[0m
+[0;32mI (5948) Oximeter: IR: 19135, RED: 128637, AutoCorr: 0.000000[0m
+[0;32mI (5948) Oximeter: IR: 19756, RED: 132802, AutoCorr: 0.000000[0m
+[0;32mI (5958) Oximeter: IR: 20376, RED: 136967, AutoCorr: 0.000000[0m
+[0;32mI (5968) Oximeter: IR: 20996, RED: 141132, AutoCorr: 0.000000[0m
+[0;32mI (5968) Oximeter: IR: 21616, RED: 145297, AutoCorr: 0.000000[0m
+[0;32mI (5978) Oximeter: IR: 22237, RED: 149462, AutoCorr: 0.000000[0m
+[0;32mI (5988) Oximeter: IR: 22857, RED: 153627, AutoCorr: 0.000000[0m
+[0;32mI (5988) Oximeter: IR: 23477, RED: 157792, AutoCorr: 0.000000[0m
+[0;32mI (5998) Oximeter: IR: 24097, RED: 161957, AutoCorr: 0.000000[0m
+[0;32mI (6008) Oximeter: IR: 24718, RED: 166122, AutoCorr: 0.000000[0m
+[0;32mI (6008) Oximeter: IR: 25338, RED: 170287, AutoCorr: 0.000000[0m
+[0;32mI (6018) Oximeter: IR: 25958, RED: 174452, AutoCorr: 0.000000[0m
+[0;32mI (6028) Oximeter: IR: 26578, RED: 178617, AutoCorr: 0.000000[0m
+[0;32mI (6028) Oximeter: IR: 27199, RED: 182783, AutoCorr: 0.000000[0m
+[0;32mI (6038) Oximeter: IR: 27819, RED: 186948, AutoCorr: 0.000000[0m
+[0;32mI (6038) Oximeter: IR: 28439, RED: 191113, AutoCorr: 0.000000[0m
+[0;32mI (6048) Oximeter: IR: 29059, RED: 195278, AutoCorr: 0.000000[0m
+[0;32mI (6058) Oximeter: IR: 29680, RED: 199443, AutoCorr: 0.000000[0m
+[0;32mI (6058) Oximeter: IR: 30300, RED: 203608, AutoCorr: 0.000000[0m
+[0;32mI (6068) Oximeter: IR: 30920, RED: 207773, AutoCorr: 0.000000[0m
+[0;32mI (6078) Oximeter: IR: 31540, RED: 211938, AutoCorr: 0.000000[0m
+[0;32mI (6078) Oximeter: IR: 32161, RED: 216103, AutoCorr: 0.000000[0m
+[0;32mI (6088) Oximeter: IR: 32781, RED: 220268, AutoCorr: 0.000000[0m
+[0;32mI (6098) Oximeter: IR: 33401, RED: 224433, AutoCorr: 0.000000[0m
+[0;32mI (6098) Oximeter: IR: 34021, RED: 228598, AutoCorr: 0.000000[0m
+[0;32mI (6108) Oximeter: IR: 34642, RED: 232763, AutoCorr: 0.000000[0m
+[0;32mI (6118) Oximeter: IR: 35262, RED: 236928, AutoCorr: 0.000000[0m
+[0;32mI (6118) Oximeter: IR: 35882, RED: 241093, AutoCorr: 0.000000[0m
+[0;32mI (6128) Oximeter: IR: 36502, RED: 245258, AutoCorr: 0.000000[0m
+[0;32mI (6128) Oximeter: IR: 37123, RED: 249423, AutoCorr: 0.000000[0m
+[0;32mI (6138) Oximeter: IR: 37743, RED: 253588, AutoCorr: 0.000000[0m
+[0;32mI (6148) Oximeter: IR: 38363, RED: 257753, AutoCorr: 0.000000[0m
+[0;32mI (6148) Oximeter: IR: 38983, RED: 261918, AutoCorr: 0.000000[0m
+[0;32mI (6158) Oximeter: IR: 39604, RED: 266083, AutoCorr: 0.000000[0m
+[0;32mI (6168) Oximeter: IR: 40224, RED: 270248, AutoCorr: 0.000000[0m
+[0;32mI (6168) Oximeter: IR: 40844, RED: 274413, AutoCorr: 0.000000[0m
+[0;32mI (6178) Oximeter: IR: 41464, RED: 278578, AutoCorr: 0.000000[0m
+[0;32mI (6188) Oximeter: IR: 42085, RED: 282743, AutoCorr: 0.000000[0m
+[0;32mI (6188) Oximeter: IR: 42705, RED: 286909, AutoCorr: 0.000000[0m
+[0;32mI (6198) Oximeter: IR: 43325, RED: 291074, AutoCorr: 0.000000[0m
+[0;32mI (6208) Oximeter: IR: 43945, RED: 295239, AutoCorr: 0.000000[0m
+[0;32mI (6208) Oximeter: IR: 44566, RED: 299404, AutoCorr: 0.000000[0m
+[0;32mI (6218) Oximeter: IR: 45186, RED: 303569, AutoCorr: 0.000000[0m
+[0;32mI (6218) Oximeter: IR: 45806, RED: 307734, AutoCorr: 0.000000[0m
+[0;32mI (6228) Oximeter: IR: -2443941, RED: -16420263, AutoCorr: 0.000000[0m
+[0;32mI (6238) Oximeter: IR: 47047, RED: 316064, AutoCorr: 0.000000[0m
+[0;32mI (6238) Oximeter: IR: 47667, RED: 320229, AutoCorr: 0.000000[0m
+[0;32mI (6248) Oximeter: IR: 48287, RED: 324394, AutoCorr: 0.000000[0m
+[0;32mI (6258) Oximeter: IR: 48907, RED: 328559, AutoCorr: 0.000000[0m
+[0;32mI (6258) Oximeter: IR: 49528, RED: 332724, AutoCorr: 0.000000[0m
+[0;32mI (6268) Oximeter: IR: 50148, RED: 336889, AutoCorr: 0.000000[0m
+[0;32mI (6278) Oximeter: IR: 50768, RED: 341054, AutoCorr: 0.000000[0m
+[0;32mI (6278) Oximeter: IR: 51388, RED: 345219, AutoCorr: 0.000000[0m
+[0;32mI (6288) Oximeter: IR: 52009, RED: 349384, AutoCorr: 0.000000[0m
+[0;32mI (6298) Oximeter: IR: 52629, RED: 353549, AutoCorr: 0.000000[0m
+[0;32mI (6298) Oximeter: IR: 53249, RED: 357714, AutoCorr: 0.000000[0m
+[0;32mI (6308) Oximeter: IR: 53869, RED: 361879, AutoCorr: 0.000000[0m
+[0;32mI (6308) Oximeter: IR: 54490, RED: 366044, AutoCorr: 0.000000[0m
+[0;32mI (6318) Oximeter: IR: 55110, RED: 370209, AutoCorr: 0.000000[0m
+[0;32mI (6328) Oximeter: IR: 55730, RED: 374374, AutoCorr: 0.000000[0m
+[0;32mI (6328) Oximeter: IR: 56350, RED: 378539, AutoCorr: 0.000000[0m
+[0;32mI (6338) Oximeter: IR: 56971, RED: 382704, AutoCorr: 0.000000[0m
+[0;32mI (6348) Oximeter: IR: 57591, RED: 386869, AutoCorr: 0.000000[0m
+[0;32mI (6348) Oximeter: IR: 58211, RED: 391035, AutoCorr: 0.000000[0m
+[0;32mI (6358) Oximeter: IR: 58832, RED: 395200, AutoCorr: 0.000000[0m
+[0;32mI (11488) Oximeter: Pearson correlation: 1.000000[0m
+[0;33mW (11488) Oximeter: HEART_RATE: invalid[0m
+[0;32mI (11488) Oximeter: SPO2: 80.14%[0m
+[0;32mI (11488) Oximeter: IR: 64250, RED: 431680, AutoCorr: 0.000000[0m
+[0;32mI (11498) Oximeter: IR: 63544, RED: 426940, AutoCorr: 0.000000[0m
+[0;32mI (11498) Oximeter: IR: 62839, RED: 422201, AutoCorr: 0.000000[0m
+[0;32mI (11508) Oximeter: IR: 62133, RED: 417461, AutoCorr: 0.000000[0m
+[0;32mI (11518) Oximeter: IR: 61428, RED: 412721, AutoCorr: 0.000000[0m
+[0;32mI (11518) Oximeter: IR: 60722, RED: 407982, AutoCorr: 0.000000[0m
+[0;32mI (11528) Oximeter: IR: 60017, RED: 403242, AutoCorr: 0.000000[0m
+[0;32mI (11538) Oximeter: IR: 59312, RED: 398503, AutoCorr: -0.026558[0m
+[0;32mI (11538) Oximeter: IR: 58606, RED: 393763, AutoCorr: -0.027201[0m
+[0;32mI (11548) Oximeter: IR: 57901, RED: 389024, AutoCorr: -0.027855[0m
+[0;32mI (11558) Oximeter: IR: 57195, RED: 384284, AutoCorr: -0.028520[0m
+[0;32mI (11558) Oximeter: IR: 56490, RED: 379545, AutoCorr: -0.029194[0m
+[0;32mI (11568) Oximeter: IR: 55785, RED: 374805, AutoCorr: -0.029879[0m
+[0;32mI (11578) Oximeter: IR: 55079, RED: 370066, AutoCorr: -0.030575[0m
+[0;32mI (11578) Oximeter: IR: -2435993, RED: -16366836, AutoCorr: -0.031283[0m
+[0;32mI (11588) Oximeter: IR: 53668, RED: 360587, AutoCorr: -0.001796[0m
+[0;32mI (11598) Oximeter: IR: 52963, RED: 355847, AutoCorr: -0.001926[0m
+[0;32mI (11598) Oximeter: IR: 52257, RED: 351108, AutoCorr: -0.002056[0m
+[0;32mI (11608) Oximeter: IR: 51552, RED: 346368, AutoCorr: -0.002186[0m
+[0;32mI (11618) Oximeter: IR: 50847, RED: 341629, AutoCorr: -0.002318[0m
+[0;32mI (11618) Oximeter: IR: 50141, RED: 336889, AutoCorr: -0.002449[0m
+[0;32mI (11628) Oximeter: IR: 49436, RED: 332149, AutoCorr: -0.002582[0m
+[0;32mI (11638) Oximeter: IR: 48730, RED: 327410, AutoCorr: -0.002714[0m
+[0;32mI (11638) Oximeter: IR: 48025, RED: 322670, AutoCorr: -0.002848[0m
+[0;32mI (11648) Oximeter: IR: 47320, RED: 317931, AutoCorr: -0.002981[0m
+[0;32mI (11658) Oximeter: IR: 46614, RED: 313191, AutoCorr: -0.003114[0m
+[0;32mI (11658) Oximeter: IR: 45909, RED: 308452, AutoCorr: -0.003248[0m
+[0;32mI (11668) Oximeter: IR: 45203, RED: 303712, AutoCorr: -0.003381[0m
+[0;32mI (11678) Oximeter: IR: 44498, RED: 298973, AutoCorr: -0.003515[0m
+[0;32mI (11678) Oximeter: IR: 43792, RED: 294233, AutoCorr: -0.003648[0m
+[0;32mI (11688) Oximeter: IR: 43087, RED: 289494, AutoCorr: -0.003781[0m
+[0;32mI (11698) Oximeter: IR: 42382, RED: 284754, AutoCorr: -0.003913[0m
+[0;32mI (11698) Oximeter: IR: 41676, RED: 280015, AutoCorr: -0.004044[0m
+[0;32mI (11708) Oximeter: IR: 40971, RED: 275275, AutoCorr: -0.004175[0m
+[0;32mI (11718) Oximeter: IR: 40265, RED: 270536, AutoCorr: -0.004305[0m
+[0;32mI (11718) Oximeter: IR: 39560, RED: 265796, AutoCorr: -0.004434[0m
+[0;32mI (11728) Oximeter: IR: 38854, RED: 261057, AutoCorr: -0.004562[0m
+[0;32mI (11738) Oximeter: IR: 38149, RED: 256317, AutoCorr: -0.004688[0m
+[0;32mI (11738) Oximeter: IR: 37444, RED: 251577, AutoCorr: -0.004813[0m
+[0;32mI (11748) Oximeter: IR: 36738, RED: 246838, AutoCorr: -0.004935[0m
+[0;32mI (11748) Oximeter: IR: 36033, RED: 242098, AutoCorr: -0.005057[0m
+[0;32mI (11758) Oximeter: IR: 35327, RED: 237359, AutoCorr: -0.005176[0m
+[0;32mI (11768) Oximeter: IR: 34622, RED: 232619, AutoCorr: -0.005293[0m
+[0;32mI (11768) Oximeter: IR: 33917, RED: 227880, AutoCorr: -0.005408[0m
+[0;32mI (11778) Oximeter: IR: 33211, RED: 223140, AutoCorr: -0.005519[0m
+[0;32mI (11788) Oximeter: IR: 32506, RED: 218401, AutoCorr: -0.005629[0m
+[0;32mI (11788) Oximeter: IR: 31800, RED: 213661, AutoCorr: -0.005734[0m
+[0;32mI (11798) Oximeter: IR: 31095, RED: 208922, AutoCorr: -0.005837[0m
+[0;32mI (11808) Oximeter: IR: 30389, RED: 204182, AutoCorr: -0.005936[0m
+[0;32mI (11808) Oximeter: IR: 29684, RED: 199443, AutoCorr: -0.006031[0m
+[0;32mI (11818) Oximeter: IR: 28979, RED: 194703, AutoCorr: -0.006122[0m
+[0;32mI (11828) Oximeter: IR: 28273, RED: 189964, AutoCorr: 0.000000[0m
+[0;32mI (11828) Oximeter: IR: 27568, RED: 185224, AutoCorr: 0.000000[0m
+[0;32mI (11838) Oximeter: IR: 26862, RED: 180485, AutoCorr: 0.000000[0m
+[0;32mI (11848) Oximeter: IR: 26157, RED: 175745, AutoCorr: 0.000000[0m
+[0;32mI (11848) Oximeter: IR: 25452, RED: 171006, AutoCorr: 0.000000[0m
+[0;32mI (11858) Oximeter: IR: 24746, RED: 166266, AutoCorr: 0.000000[0m
+[0;32mI (11868) Oximeter: IR: 24041, RED: 161526, AutoCorr: 0.000000[0m
+[0;32mI (11868) Oximeter: IR: 23335, RED: 156787, AutoCorr: 0.000000[0m
+[0;32mI (11878) Oximeter: IR: 22630, RED: 152047, AutoCorr: 0.000000[0m
+[0;32mI (11888) Oximeter: IR: 21924, RED: 147308, AutoCorr: 0.000000[0m
+[0;32mI (11888) Oximeter: IR: 21219, RED: 142568, AutoCorr: 0.000000[0m
+[0;32mI (11898) Oximeter: IR: 20514, RED: 137829, AutoCorr: 0.000000[0m
+[0;32mI (11908) Oximeter: IR: 19808, RED: 133089, AutoCorr: 0.000000[0m
+[0;32mI (11908) Oximeter: IR: 19103, RED: 128350, AutoCorr: 0.000000[0m
+[0;32mI (11918) Oximeter: IR: 18397, RED: 123610, AutoCorr: 0.000000[0m
+[0;32mI (11928) Oximeter: IR: 17692, RED: 118871, AutoCorr: 0.000000[0m
+[0;32mI (11928) Oximeter: IR: 16987, RED: 114131, AutoCorr: 0.000000[0m
+[0;32mI (11938) Oximeter: IR: 16281, RED: 109392, AutoCorr: 0.000000[0m
+[0;32mI (11938) Oximeter: IR: 15576, RED: 104652, AutoCorr: 0.000000[0m
+[0;32mI (11948) Oximeter: IR: 14870, RED: 99913, AutoCorr: 0.000000[0m
+[0;32mI (11958) Oximeter: IR: 14165, RED: 95173, AutoCorr: 0.000000[0m
+[0;32mI (11958) Oximeter: IR: 13459, RED: 90434, AutoCorr: 0.000000[0m
+[0;32mI (11968) Oximeter: IR: 12754, RED: 85694, AutoCorr: 0.000000[0m
+[0;32mI (11978) Oximeter: IR: 12049, RED: 80954, AutoCorr: 0.000000[0m
+[0;32mI (11978) Oximeter: IR: 11343, RED: 76215, AutoCorr: 0.000000[0m
+[0;32mI (11988) Oximeter: IR: 10638, RED: 71475, AutoCorr: 0.000000[0m
+[0;32mI (11998) Oximeter: IR: 9932, RED: 66736, AutoCorr: 0.000000[0m
+[0;32mI (11998) Oximeter: IR: 9227, RED: 61996, AutoCorr: 0.000000[0m
+[0;32mI (12008) Oximeter: IR: 8522, RED: 57257, AutoCorr: 0.000000[0m
+[0;32mI (12018) Oximeter: IR: 7816, RED: 52517, AutoCorr: 0.000000[0m
+[0;32mI (12018) Oximeter: IR: 7111, RED: 47778, AutoCorr: 0.000000[0m
+[0;32mI (12028) Oximeter: IR: 6405, RED: 43038, AutoCorr: 0.000000[0m
+[0;32mI (12028) Oximeter: IR: 5700, RED: 38299, AutoCorr: 0.000000[0m
+[0;32mI (12038) Oximeter: IR: 4994, RED: 33559, AutoCorr: 0.000000[0m
+[0;32mI (12048) Oximeter: IR: 4289, RED: 28820, AutoCorr: 0.000000[0m
+[0;32mI (12048) Oximeter: IR: 3584, RED: 24080, AutoCorr: 0.000000[0m
+[0;32mI (12058) Oximeter: IR: 2878, RED: 19341, AutoCorr: 0.000000[0m
+[0;32mI (12068) Oximeter: IR: 2173, RED: 14601, AutoCorr: 0.000000[0m
+[0;32mI (12068) Oximeter: IR: 1467, RED: 9862, AutoCorr: 0.000000[0m
+[0;32mI (12078) Oximeter: IR: 762, RED: 5122, AutoCorr: 0.000000[0m
+[0;32mI (12078) Oximeter: IR: 57, RED: 382, AutoCorr: 0.000000[0m
+[0;32mI (12088) Oximeter: IR: -648, RED: -4356, AutoCorr: 0.000000[0m
+[0;32mI (12098) Oximeter: IR: -1353, RED: -9096, AutoCorr: 0.000000[0m
+[0;32mI (12098) Oximeter: IR: -2059, RED: -13835, AutoCorr: 0.000000[0m
+[0;32mI (12108) Oximeter: IR: -2764, RED: -18575, AutoCorr: 0.000000[0m
+[0;32mI (12118) Oximeter: IR: -3470, RED: -23314, AutoCorr: 0.000000[0m
+[0;32mI (12118) Oximeter: IR: -4175, RED: -28054, AutoCorr: 0.000000[0m
+[0;32mI (12128) Oximeter: IR: -4880, RED: -32793, AutoCorr: 0.000000[0m
+[0;32mI (12138) Oximeter: IR: -5586, RED: -37533, AutoCorr: 0.000000[0m
+[0;32mI (12138) Oximeter: IR: -6291, RED: -42272, AutoCorr: 0.000000[0m
+[0;32mI (12148) Oximeter: IR: -6997, RED: -47012, AutoCorr: 0.000000[0m
+[0;32mI (12158) Oximeter: IR: -7702, RED: -51751, AutoCorr: 0.000000[0m
+[0;32mI (12158) Oximeter: IR: -8408, RED: -56491, AutoCorr: 0.000000[0m
+[0;32mI (12168) Oximeter: IR: -9113, RED: -61230, AutoCorr: 0.000000[0m
+[0;32mI (12168) Oximeter: IR: -9818, RED: -65970, AutoCorr: 0.000000[0m
+[0;32mI (12178) Oximeter: IR: -10524, RED: -70709, AutoCorr: 0.000000[0m
+[0;32mI (12188) Oximeter: IR: -11229, RED: -75449, AutoCorr: 0.000000[0m
+[0;32mI (12188) Oximeter: IR: -11935, RED: -80188, AutoCorr: 0.000000[0m
+[0;32mI (12198) Oximeter: IR: -12640, RED: -84928, AutoCorr: 0.000000[0m
+[0;32mI (12208) Oximeter: IR: -13345, RED: -89668, AutoCorr: 0.000000[0m
+[0;32mI (12208) Oximeter: IR: -14051, RED: -94407, AutoCorr: 0.000000[0m
+[0;32mI (12218) Oximeter: IR: -14756, RED: -99147, AutoCorr: 0.000000[0m
+[0;32mI (12228) Oximeter: IR: -15462, RED: -103886, AutoCorr: 0.000000[0m
+[0;32mI (12228) Oximeter: IR: -16167, RED: -108626, AutoCorr: 0.000000[0m
+[0;32mI (12238) Oximeter: IR: -16873, RED: -113365, AutoCorr: 0.000000[0m
+[0;32mI (12248) Oximeter: IR: -17578, RED: -118105, AutoCorr: 0.000000[0m
+[0;32mI (12248) Oximeter: IR: -18283, RED: -122844, AutoCorr: 0.000000[0m
+[0;32mI (12258) Oximeter: IR: -18989, RED: -127584, AutoCorr: 0.000000[0m
+[0;32mI (12268) Oximeter: IR: -19694, RED: -132323, AutoCorr: 0.000000[0m
+[0;32mI (12268) Oximeter: IR: -20400, RED: -137063, AutoCorr: 0.000000[0m
+[0;32mI (12278) Oximeter: IR: -21105, RED: -141802, AutoCorr: 0.000000[0m
+[0;32mI (12288) Oximeter: IR: -21810, RED: -146542, AutoCorr: 0.000000[0m
+[0;32mI (12288) Oximeter: IR: -22516, RED: -151281, AutoCorr: 0.000000[0m
+[0;32mI (12298) Oximeter: IR: -23221, RED: -156021, AutoCorr: 0.000000[0m
+[0;32mI (12308) Oximeter: IR: -23927, RED: -160760, AutoCorr: 0.000000[0m
+[0;32mI (12308) Oximeter: IR: -24632, RED: -165500, AutoCorr: 0.000000[0m
+[0;32mI (12318) Oximeter: IR: -25338, RED: -170240, AutoCorr: 0.000000[0m
+[0;32mI (17448) Oximeter: Pearson correlation: 1.000000[0m
+[0;33mW (17448) Oximeter: HEART_RATE: invalid[0m
+[0;32mI (17448) Oximeter: SPO2: 80.14%[0m
+[0;32mI (17448) Oximeter: IR: 40721, RED: 273600, AutoCorr: 0.000000[0m
+[0;32mI (17458) Oximeter: IR: 40693, RED: 273408, AutoCorr: 0.000000[0m
+[0;32mI (17458) Oximeter: IR: 40664, RED: 273217, AutoCorr: 0.000000[0m
+[0;32mI (17468) Oximeter: IR: 40636, RED: 273025, AutoCorr: 0.000000[0m
+[0;32mI (17478) Oximeter: IR: 40607, RED: 272834, AutoCorr: 0.000000[0m
+[0;32mI (17478) Oximeter: IR: 40579, RED: 272642, AutoCorr: 0.000000[0m
+[0;32mI (17488) Oximeter: IR: 40550, RED: 272451, AutoCorr: 0.000000[0m
+[0;32mI (17498) Oximeter: IR: 40522, RED: 272259, AutoCorr: -0.017724[0m
+[0;32mI (17498) Oximeter: IR: 40493, RED: 272068, AutoCorr: -0.018004[0m
+[0;32mI (17508) Oximeter: IR: 40465, RED: 271876, AutoCorr: -0.018289[0m
+[0;32mI (17518) Oximeter: IR: 40436, RED: 271685, AutoCorr: -0.018579[0m
+[0;32mI (17518) Oximeter: IR: 40408, RED: 271493, AutoCorr: -0.018874[0m
+[0;32mI (17528) Oximeter: IR: 40379, RED: 271302, AutoCorr: -0.019174[0m
+[0;32mI (17538) Oximeter: IR: 40351, RED: 271110, AutoCorr: -0.019479[0m
+[0;32mI (17538) Oximeter: IR: 40322, RED: 270919, AutoCorr: -0.019789[0m
+[0;32mI (17548) Oximeter: IR: 40294, RED: 270727, AutoCorr: -0.020105[0m
+[0;32mI (17558) Oximeter: IR: 40265, RED: 270536, AutoCorr: -0.020427[0m
+[0;32mI (17558) Oximeter: IR: -2450130, RED: -16461818, AutoCorr: -0.020754[0m
+[0;32mI (17568) Oximeter: IR: 40208, RED: 270153, AutoCorr: -0.011416[0m
+[0;32mI (17578) Oximeter: IR: 40180, RED: 269961, AutoCorr: -0.011660[0m
+[0;32mI (17578) Oximeter: IR: 40151, RED: 269770, AutoCorr: -0.002946[0m
+[0;32mI (17588) Oximeter: IR: 40123, RED: 269578, AutoCorr: -0.003122[0m
+[0;32mI (17598) Oximeter: IR: 40094, RED: 269387, AutoCorr: -0.003302[0m
+[0;32mI (17598) Oximeter: IR: 40066, RED: 269195, AutoCorr: -0.003485[0m
+[0;32mI (17608) Oximeter: IR: 40037, RED: 269004, AutoCorr: -0.003671[0m
+[0;32mI (17618) Oximeter: IR: 40009, RED: 268812, AutoCorr: -0.003861[0m
+[0;32mI (17618) Oximeter: IR: 39980, RED: 268621, AutoCorr: -0.004055[0m
+[0;32mI (17628) Oximeter: IR: 39952, RED: 268429, AutoCorr: -0.004253[0m
+[0;32mI (17638) Oximeter: IR: 39923, RED: 268238, AutoCorr: -0.004454[0m
+[0;32mI (17638) Oximeter: IR: 39895, RED: 268046, AutoCorr: -0.004660[0m
+[0;32mI (17648) Oximeter: IR: 39866, RED: 267855, AutoCorr: -0.004870[0m
+[0;32mI (17658) Oximeter: IR: 39838, RED: 267663, AutoCorr: -0.005084[0m
+[0;32mI (17658) Oximeter: IR: 39809, RED: 267472, AutoCorr: -0.005302[0m
+[0;32mI (17668) Oximeter: IR: 39781, RED: 267280, AutoCorr: -0.005526[0m
+[0;32mI (17678) Oximeter: IR: 39752, RED: 267089, AutoCorr: -0.005754[0m
+[0;32mI (17678) Oximeter: IR: 39724, RED: 266897, AutoCorr: -0.005986[0m
+[0;32mI (17688) Oximeter: IR: 39695, RED: 266706, AutoCorr: -0.006224[0m
+[0;32mI (17698) Oximeter: IR: 39667, RED: 266514, AutoCorr: -0.006467[0m
+[0;32mI (17698) Oximeter: IR: 39638, RED: 266323, AutoCorr: -0.006716[0m
+[0;32mI (17708) Oximeter: IR: 39610, RED: 266131, AutoCorr: -0.006970[0m
+[0;32mI (17708) Oximeter: IR: 39581, RED: 265940, AutoCorr: -0.007230[0m
+[0;32mI (17718) Oximeter: IR: 39553, RED: 265748, AutoCorr: -0.007496[0m
+[0;32mI (17728) Oximeter: IR: 39524, RED: 265557, AutoCorr: -0.007768[0m
+[0;32mI (17728) Oximeter: IR: 39496, RED: 265365, AutoCorr: -0.008046[0m
+[0;32mI (17738) Oximeter: IR: 39467, RED: 265174, AutoCorr: -0.008331[0m
+[0;32mI (17748) Oximeter: IR: 39439, RED: 264982, AutoCorr: -0.008623[0m
+[0;32mI (17748) Oximeter: IR: 39410, RED: 264791, AutoCorr: -0.008922[0m
+[0;32mI (17758) Oximeter: IR: 39382, RED: 264599, AutoCorr: -0.009229[0m
+[0;32mI (17768) Oximeter: IR: 39353, RED: 264408, AutoCorr: -0.009543[0m
+[0;32mI (17768) Oximeter: IR: 39325, RED: 264216, AutoCorr: -0.009865[0m
+[0;32mI (17778) Oximeter: IR: 39296, RED: 264025, AutoCorr: -0.010195[0m
+[0;32mI (17788) Oximeter: IR: 39268, RED: 263833, AutoCorr: 0.000000[0m
+[0;32mI (17788) Oximeter: IR: 39239, RED: 263642, AutoCorr: 0.000000[0m
+[0;32mI (17798) Oximeter: IR: 39211, RED: 263450, AutoCorr: 0.000000[0m
+[0;32mI (17808) Oximeter: IR: 39182, RED: 263259, AutoCorr: 0.000000[0m
+[0;32mI (17808) Oximeter: IR: 39154, RED: 263067, AutoCorr: 0.000000[0m
+[0;32mI (17818) Oximeter: IR: 39125, RED: 262876, AutoCorr: 0.000000[0m
+[0;32mI (17828) Oximeter: IR: 39097, RED: 262684, AutoCorr: 0.000000[0m
+[0;32mI (17828) Oximeter: IR: 39068, RED: 262493, AutoCorr: 0.000000[0m
+[0;32mI (17838) Oximeter: IR: 39040, RED: 262301, AutoCorr: 0.000000[0m
+[0;32mI (17848) Oximeter: IR: 39011, RED: 262110, AutoCorr: 0.000000[0m
+[0;32mI (17848) Oximeter: IR: 38983, RED: 261918, AutoCorr: 0.000000[0m
+[0;32mI (17858) Oximeter: IR: 38954, RED: 261727, AutoCorr: 0.000000[0m
+[0;32mI (17868) Oximeter: IR: 38926, RED: 261535, AutoCorr: 0.000000[0m
+[0;32mI (17868) Oximeter: IR: 38897, RED: 261344, AutoCorr: 0.000000[0m
+[0;32mI (17878) Oximeter: IR: 38869, RED: 261152, AutoCorr: 0.000000[0m
+[0;32mI (17888) Oximeter: IR: 38840, RED: 260961, AutoCorr: 0.000000[0m
+[0;32mI (17888) Oximeter: IR: 38812, RED: 260769, AutoCorr: 0.000000[0m
+[0;32mI (17898) Oximeter: IR: 38783, RED: 260578, AutoCorr: 0.000000[0m
+[0;32mI (17898) Oximeter: IR: 38755, RED: 260386, AutoCorr: 0.000000[0m
+[0;32mI (17908) Oximeter: IR: 38726, RED: 260195, AutoCorr: 0.000000[0m
+[0;32mI (17918) Oximeter: IR: 38698, RED: 260003, AutoCorr: 0.000000[0m
+[0;32mI (17918) Oximeter: IR: 38669, RED: 259812, AutoCorr: 0.000000[0m
+[0;32mI (17928) Oximeter: IR: 38641, RED: 259620, AutoCorr: 0.000000[0m
+[0;32mI (17938) Oximeter: IR: 38612, RED: 259429, AutoCorr: 0.000000[0m
+[0;32mI (17938) Oximeter: IR: 38584, RED: 259237, AutoCorr: 0.000000[0m
+[0;32mI (17948) Oximeter: IR: 38555, RED: 259046, AutoCorr: 0.000000[0m
+[0;32mI (17958) Oximeter: IR: 38527, RED: 258854, AutoCorr: 0.000000[0m
+[0;32mI (17958) Oximeter: IR: 38498, RED: 258663, AutoCorr: 0.000000[0m
+[0;32mI (17968) Oximeter: IR: 38470, RED: 258471, AutoCorr: 0.000000[0m
+[0;32mI (17978) Oximeter: IR: 38441, RED: 258280, AutoCorr: 0.000000[0m
+[0;32mI (17978) Oximeter: IR: 38413, RED: 258088, AutoCorr: 0.000000[0m
+[0;32mI (17988) Oximeter: IR: 38384, RED: 257897, AutoCorr: 0.000000[0m
+[0;32mI (17998) Oximeter: IR: 38356, RED: 257705, AutoCorr: 0.000000[0m
+[0;32mI (17998) Oximeter: IR: 38327, RED: 257514, AutoCorr: 0.000000[0m
+[0;32mI (18008) Oximeter: IR: 38299, RED: 257322, AutoCorr: 0.000000[0m
+[0;32mI (18018) Oximeter: IR: 38270, RED: 257131, AutoCorr: 0.000000[0m
+[0;32mI (18018) Oximeter: IR: 38242, RED: 256939, AutoCorr: 0.000000[0m
+[0;32mI (18028) Oximeter: IR: 38213, RED: 256748, AutoCorr: 0.000000[0m
+[0;32mI (18028) Oximeter: IR: 38185, RED: 256556, AutoCorr: 0.000000[0m
+[0;32mI (18038) Oximeter: IR: 38156, RED: 256365, AutoCorr: 0.000000[0m
+[0;32mI (18048) Oximeter: IR: 38128, RED: 256173, AutoCorr: 0.000000[0m
+[0;32mI (18048) Oximeter: IR: 38099, RED: 255982, AutoCorr: 0.000000[0m
+[0;32mI (18058) Oximeter: IR: 38071, RED: 255790, AutoCorr: 0.000000[0m
+[0;32mI (18068) Oximeter: IR: 38042, RED: 255599, AutoCorr: 0.000000[0m
+[0;32mI (18068) Oximeter: IR: 38014, RED: 255407, AutoCorr: 0.000000[0m
+[0;32mI (18078) Oximeter: IR: 37985, RED: 255216, AutoCorr: 0.000000[0m
+[0;32mI (18088) Oximeter: IR: 37957, RED: 255024, AutoCorr: 0.000000[0m
+[0;32mI (18088) Oximeter: IR: 37928, RED: 254833, AutoCorr: 0.000000[0m
+[0;32mI (18098) Oximeter: IR: 37900, RED: 254641, AutoCorr: 0.000000[0m
+[0;32mI (18108) Oximeter: IR: 37871, RED: 254450, AutoCorr: 0.000000[0m
+[0;32mI (18108) Oximeter: IR: 37843, RED: 254258, AutoCorr: 0.000000[0m
+[0;32mI (18118) Oximeter: IR: 37814, RED: 254067, AutoCorr: 0.000000[0m
+[0;32mI (18128) Oximeter: IR: 37786, RED: 253875, AutoCorr: 0.000000[0m
+[0;32mI (18128) Oximeter: IR: 37757, RED: 253684, AutoCorr: 0.000000[0m
+[0;32mI (18138) Oximeter: IR: 37729, RED: 253492, AutoCorr: 0.000000[0m
+[0;32mI (18148) Oximeter: IR: 37700, RED: 253301, AutoCorr: 0.000000[0m
+[0;32mI (18148) Oximeter: IR: 37672, RED: 253109, AutoCorr: 0.000000[0m
+[0;32mI (18158) Oximeter: IR: -2452724, RED: -16479244, AutoCorr: 0.000000[0m
+[0;32mI (18168) Oximeter: IR: 37615, RED: 252726, AutoCorr: 0.000000[0m
+[0;32mI (18168) Oximeter: IR: 37586, RED: 252535, AutoCorr: 0.000000[0m
+[0;32mI (18178) Oximeter: IR: 37558, RED: 252343, AutoCorr: 0.000000[0m
+[0;32mI (18188) Oximeter: IR: 37529, RED: 252152, AutoCorr: 0.000000[0m
+[0;32mI (18188) Oximeter: IR: 37501, RED: 251960, AutoCorr: 0.000000[0m
+[0;32mI (18198) Oximeter: IR: 37472, RED: 251769, AutoCorr: 0.000000[0m
+[0;32mI (18198) Oximeter: IR: 37444, RED: 251577, AutoCorr: 0.000000[0m
+[0;32mI (18208) Oximeter: IR: 37415, RED: 251386, AutoCorr: 0.000000[0m
+[0;32mI (18218) Oximeter: IR: 37387, RED: 251195, AutoCorr: 0.000000[0m
+[0;32mI (18218) Oximeter: IR: 37358, RED: 251003, AutoCorr: 0.000000[0m
+[0;32mI (18228) Oximeter: IR: 37330, RED: 250812, AutoCorr: 0.000000[0m
+[0;32mI (18238) Oximeter: IR: 37301, RED: 250620, AutoCorr: 0.000000[0m
+[0;32mI (18238) Oximeter: IR: 37273, RED: 250429, AutoCorr: 0.000000[0m
+[0;32mI (18248) Oximeter: IR: 37244, RED: 250237, AutoCorr: 0.000000[0m
+[0;32mI (18258) Oximeter: IR: 37216, RED: 250046, AutoCorr: 0.000000[0m
+[0;32mI (18258) Oximeter: IR: 37187, RED: 249854, AutoCorr: 0.000000[0m
+[0;32mI (18268) Oximeter: IR: 37159, RED: 249663, AutoCorr: 0.000000[0m
+[0;32mI (18278) Oximeter: IR: 37130, RED: 249471, AutoCorr: 0.000000[0m
+[0;32mI (18278) Oximeter: IR: 37102, RED: 249280, AutoCorr: 0.000000[0m
+[0;32mI (23408) Oximeter: Pearson correlation: 1.000000[0m
+[0;33mW (23408) Oximeter: HEART_RATE: invalid[0m
+[0;32mI (23408) Oximeter: SPO2: 80.14%[0m
+[0;32mI (23408) Oximeter: IR: 904, RED: 6080, AutoCorr: 0.000000[0m
+[0;32mI (23418) Oximeter: IR: 1197, RED: 8042, AutoCorr: 0.000000[0m
+[0;32mI (23418) Oximeter: IR: 1489, RED: 10005, AutoCorr: 0.000000[0m
+[0;32mI (23428) Oximeter: IR: 1781, RED: 11968, AutoCorr: 0.000000[0m
+[0;32mI (23438) Oximeter: IR: 2073, RED: 13931, AutoCorr: 0.000000[0m
+[0;32mI (23438) Oximeter: IR: 2365, RED: 15894, AutoCorr: 0.000000[0m
+[0;32mI (23448) Oximeter: IR: 2657, RED: 17857, AutoCorr: 0.000000[0m
+[0;32mI (23458) Oximeter: IR: 2949, RED: 19819, AutoCorr: -0.011797[0m
+[0;32mI (23458) Oximeter: IR: 3242, RED: 21782, AutoCorr: -0.012022[0m
+[0;32mI (23468) Oximeter: IR: 3534, RED: 23745, AutoCorr: -0.012250[0m
+[0;32mI (23468) Oximeter: IR: 3826, RED: 25708, AutoCorr: -0.012482[0m
+[0;32mI (23478) Oximeter: IR: 4118, RED: 27671, AutoCorr: -0.012717[0m
+[0;32mI (23488) Oximeter: IR: 4410, RED: 29634, AutoCorr: -0.012957[0m
+[0;32mI (23488) Oximeter: IR: 4702, RED: 31596, AutoCorr: -0.013200[0m
+[0;32mI (23498) Oximeter: IR: 4994, RED: 33559, AutoCorr: -0.013447[0m
+[0;32mI (23508) Oximeter: IR: 5287, RED: 35522, AutoCorr: -0.013700[0m
+[0;32mI (23508) Oximeter: IR: 5579, RED: 37485, AutoCorr: -0.013956[0m
+[0;32mI (23518) Oximeter: IR: 5871, RED: 39448, AutoCorr: -0.014216[0m
+[0;32mI (23528) Oximeter: IR: 6163, RED: 41411, AutoCorr: -0.014481[0m
+[0;32mI (23528) Oximeter: IR: 6455, RED: 43373, AutoCorr: -0.014750[0m
+[0;32mI (23538) Oximeter: IR: 6747, RED: 45336, AutoCorr: -0.015024[0m
+[0;32mI (23548) Oximeter: IR: 7039, RED: 47299, AutoCorr: -0.015302[0m
+[0;32mI (23548) Oximeter: IR: 7332, RED: 49262, AutoCorr: -0.015587[0m
+[0;32mI (23558) Oximeter: IR: 7624, RED: 51225, AutoCorr: -0.015875[0m
+[0;32mI (23558) Oximeter: IR: 7916, RED: 53188, AutoCorr: -0.016169[0m
+[0;32mI (23568) Oximeter: IR: 8208, RED: 55150, AutoCorr: -0.016468[0m
+[0;32mI (23578) Oximeter: IR: 8500, RED: 57113, AutoCorr: -0.016773[0m
+[0;32mI (23578) Oximeter: IR: 8792, RED: 59076, AutoCorr: -0.017083[0m
+[0;32mI (23588) Oximeter: IR: 9084, RED: 61039, AutoCorr: -0.017399[0m
+[0;32mI (23598) Oximeter: IR: 9377, RED: 63002, AutoCorr: -0.017721[0m
+[0;32mI (23598) Oximeter: IR: 9669, RED: 64965, AutoCorr: -0.018049[0m
+[0;32mI (23608) Oximeter: IR: 9961, RED: 66927, AutoCorr: -0.018383[0m
+[0;32mI (23618) Oximeter: IR: 10253, RED: 68890, AutoCorr: -0.018723[0m
+[0;32mI (23618) Oximeter: IR: 10545, RED: 70853, AutoCorr: -0.019070[0m
+[0;32mI (23628) Oximeter: IR: 10837, RED: 72816, AutoCorr: -0.019424[0m
+[0;32mI (23638) Oximeter: IR: 11129, RED: 74779, AutoCorr: -0.019784[0m
+[0;32mI (23638) Oximeter: IR: 11422, RED: 76742, AutoCorr: -0.020153[0m
+[0;32mI (23648) Oximeter: IR: 11714, RED: 78704, AutoCorr: -0.020528[0m
+[0;32mI (23648) Oximeter: IR: 12006, RED: 80667, AutoCorr: -0.020911[0m
+[0;32mI (23658) Oximeter: IR: 12298, RED: 82630, AutoCorr: -0.021301[0m
+[0;32mI (23668) Oximeter: IR: 12590, RED: 84593, AutoCorr: -0.021700[0m
+[0;32mI (23668) Oximeter: IR: 12882, RED: 86556, AutoCorr: -0.022107[0m
+[0;32mI (23678) Oximeter: IR: 13174, RED: 88519, AutoCorr: -0.022523[0m
+[0;32mI (23688) Oximeter: IR: 13467, RED: 90481, AutoCorr: -0.022948[0m
+[0;32mI (23688) Oximeter: IR: 13759, RED: 92444, AutoCorr: 0.000295[0m
+[0;32mI (23698) Oximeter: IR: 14051, RED: 94407, AutoCorr: 0.000319[0m
+[0;32mI (23708) Oximeter: IR: 14343, RED: 96370, AutoCorr: 0.000345[0m
+[0;32mI (23708) Oximeter: IR: 14635, RED: 98333, AutoCorr: 0.000373[0m
+[0;32mI (23718) Oximeter: IR: 14927, RED: 100296, AutoCorr: 0.000403[0m
+[0;32mI (23728) Oximeter: IR: 15219, RED: 102258, AutoCorr: 0.000435[0m
+[0;32mI (23728) Oximeter: IR: 15512, RED: 104221, AutoCorr: 0.000468[0m
+[0;32mI (23738) Oximeter: IR: 15804, RED: 106184, AutoCorr: 0.000000[0m
+[0;32mI (23748) Oximeter: IR: 16096, RED: 108147, AutoCorr: 0.000000[0m
+[0;32mI (23748) Oximeter: IR: 16388, RED: 110110, AutoCorr: 0.000000[0m
+[0;32mI (23758) Oximeter: IR: 16680, RED: 112073, AutoCorr: 0.000000[0m
+[0;32mI (23768) Oximeter: IR: 16972, RED: 114035, AutoCorr: 0.000000[0m
+[0;32mI (23768) Oximeter: IR: 17264, RED: 115998, AutoCorr: 0.000000[0m
+[0;32mI (23778) Oximeter: IR: 17557, RED: 117961, AutoCorr: 0.000000[0m
+[0;32mI (23778) Oximeter: IR: 17849, RED: 119924, AutoCorr: 0.000000[0m
+[0;32mI (23788) Oximeter: IR: 18141, RED: 121887, AutoCorr: 0.000000[0m
+[0;32mI (23798) Oximeter: IR: 18433, RED: 123850, AutoCorr: 0.000000[0m
+[0;32mI (23798) Oximeter: IR: 18725, RED: 125812, AutoCorr: 0.000000[0m
+[0;32mI (23808) Oximeter: IR: 19017, RED: 127775, AutoCorr: 0.000000[0m
+[0;32mI (23818) Oximeter: IR: 19309, RED: 129738, AutoCorr: 0.000000[0m
+[0;32mI (23818) Oximeter: IR: 19602, RED: 131701, AutoCorr: 0.000000[0m
+[0;32mI (23828) Oximeter: IR: 19894, RED: 133664, AutoCorr: 0.000000[0m
+[0;32mI (23838) Oximeter: IR: 20186, RED: 135627, AutoCorr: 0.000000[0m
+[0;32mI (23838) Oximeter: IR: 20478, RED: 137589, AutoCorr: 0.000000[0m
+[0;32mI (23848) Oximeter: IR: 20770, RED: 139552, AutoCorr: 0.000000[0m
+[0;32mI (23858) Oximeter: IR: 21062, RED: 141515, AutoCorr: 0.000000[0m
+[0;32mI (23858) Oximeter: IR: 21354, RED: 143478, AutoCorr: 0.000000[0m
+[0;32mI (23868) Oximeter: IR: 21647, RED: 145441, AutoCorr: 0.000000[0m
+[0;32mI (23878) Oximeter: IR: 21939, RED: 147404, AutoCorr: 0.000000[0m
+[0;32mI (23878) Oximeter: IR: 22231, RED: 149366, AutoCorr: 0.000000[0m
+[0;32mI (23888) Oximeter: IR: 22523, RED: 151329, AutoCorr: 0.000000[0m
+[0;32mI (23898) Oximeter: IR: 22815, RED: 153292, AutoCorr: 0.000000[0m
+[0;32mI (23898) Oximeter: IR: 23107, RED: 155255, AutoCorr: 0.000000[0m
+[0;32mI (23908) Oximeter: IR: 23399, RED: 157218, AutoCorr: 0.000000[0m
+[0;32mI (23908) Oximeter: IR: 23692, RED: 159181, AutoCorr: 0.000000[0m
+[0;32mI (23918) Oximeter: IR: 23984, RED: 161143, AutoCorr: 0.000000[0m
+[0;32mI (23928) Oximeter: IR: 24276, RED: 163106, AutoCorr: 0.000000[0m
+[0;32mI (23928) Oximeter: IR: 24568, RED: 165069, AutoCorr: 0.000000[0m
+[0;32mI (23938) Oximeter: IR: 24860, RED: 167032, AutoCorr: 0.000000[0m
+[0;32mI (23948) Oximeter: IR: 25152, RED: 168995, AutoCorr: 0.000000[0m
+[0;32mI (23948) Oximeter: IR: -2464923, RED: -16561204, AutoCorr: 0.000000[0m
+[0;32mI (23958) Oximeter: IR: 25737, RED: 172920, AutoCorr: 0.000000[0m
+[0;32mI (23968) Oximeter: IR: 26029, RED: 174883, AutoCorr: 0.000000[0m
+[0;32mI (23968) Oximeter: IR: 26321, RED: 176846, AutoCorr: 0.000000[0m
+[0;32mI (23978) Oximeter: IR: 26613, RED: 178809, AutoCorr: 0.000000[0m
+[0;32mI (23988) Oximeter: IR: 26905, RED: 180772, AutoCorr: 0.000000[0m
+[0;32mI (23988) Oximeter: IR: 27197, RED: 182735, AutoCorr: 0.000000[0m
+[0;32mI (23998) Oximeter: IR: 27489, RED: 184697, AutoCorr: 0.000000[0m
+[0;32mI (24008) Oximeter: IR: 27782, RED: 186660, AutoCorr: 0.000000[0m
+[0;32mI (24008) Oximeter: IR: 28074, RED: 188623, AutoCorr: 0.000000[0m
+[0;32mI (24018) Oximeter: IR: 28366, RED: 190586, AutoCorr: 0.000000[0m
+[0;32mI (24028) Oximeter: IR: 28658, RED: 192549, AutoCorr: 0.000000[0m
+[0;32mI (24028) Oximeter: IR: 28950, RED: 194512, AutoCorr: 0.000000[0m
+[0;32mI (24038) Oximeter: IR: 29242, RED: 196474, AutoCorr: 0.000000[0m
+[0;32mI (24048) Oximeter: IR: 29534, RED: 198437, AutoCorr: 0.000000[0m
+[0;32mI (24048) Oximeter: IR: 29827, RED: 200400, AutoCorr: 0.000000[0m
+[0;32mI (24058) Oximeter: IR: 30119, RED: 202363, AutoCorr: 0.000000[0m
+[0;32mI (24068) Oximeter: IR: 30411, RED: 204326, AutoCorr: 0.000000[0m
+[0;32mI (24068) Oximeter: IR: 30703, RED: 206289, AutoCorr: 0.000000[0m
+[0;32mI (24078) Oximeter: IR: 30995, RED: 208252, AutoCorr: 0.000000[0m
+[0;32mI (24078) Oximeter: IR: 31287, RED: 210214, AutoCorr: 0.000000[0m
+[0;32mI (24088) Oximeter: IR: 31579, RED: 212177, AutoCorr: 0.000000[0m
+[0;32mI (24098) Oximeter: IR: 31872, RED: 214140, AutoCorr: 0.000000[0m
+[0;32mI (24098) Oximeter: IR: 32164, RED: 216103, AutoCorr: 0.000000[0m
+[0;32mI (24108) Oximeter: IR: 32456, RED: 218066, AutoCorr: 0.000000[0m
+[0;32mI (24118) Oximeter: IR: 32748, RED: 220029, AutoCorr: 0.000000[0m
+[0;32mI (24118) Oximeter: IR: 33040, RED: 221991, AutoCorr: 0.000000[0m
+[0;32mI (24128) Oximeter: IR: 33332, RED: 223954, AutoCorr: 0.000000[0m
+[0;32mI (24138) Oximeter: IR: 33624, RED: 225917, AutoCorr: 0.000000[0m
+[0;32mI (24138) Oximeter: IR: 33917, RED: 227880, AutoCorr: 0.000000[0m
+[0;32mI (24148) Oximeter: IR: 34209, RED: 229843, AutoCorr: 0.000000[0m
+[0;32mI (24158) Oximeter: IR: 34501, RED: 231806, AutoCorr: 0.000000[0m
+[0;32mI (24158) Oximeter: IR: 34793, RED: 233768, AutoCorr: 0.000000[0m
+[0;32mI (24168) Oximeter: IR: 35085, RED: 235731, AutoCorr: 0.000000[0m
+[0;32mI (24178) Oximeter: IR: 35377, RED: 237694, AutoCorr: 0.000000[0m
+[0;32mI (24178) Oximeter: IR: 35669, RED: 239657, AutoCorr: 0.000000[0m
+[0;32mI (24188) Oximeter: IR: 35962, RED: 241620, AutoCorr: 0.000000[0m
+[0;32mI (24198) Oximeter: IR: 36254, RED: 243583, AutoCorr: 0.000000[0m
+[0;32mI (24198) Oximeter: IR: 36546, RED: 245545, AutoCorr: 0.000000[0m
+[0;32mI (24208) Oximeter: IR: 36838, RED: 247508, AutoCorr: 0.000000[0m
+[0;32mI (24208) Oximeter: IR: 37130, RED: 249471, AutoCorr: 0.000000[0m
+[0;32mI (24218) Oximeter: IR: 37422, RED: 251434, AutoCorr: 0.000000[0m
+[0;32mI (24228) Oximeter: IR: 37714, RED: 253397, AutoCorr: 0.000000[0m
+[0;32mI (24228) Oximeter: IR: 38007, RED: 255360, AutoCorr: 0.000000[0m

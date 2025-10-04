@@ -1,0 +1,15 @@
+[1/7] Performing build step for 'bootloader'
+[1/1] C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\lenovo\workspace-eclipse\max30102_esp32_oximeter\build\bootloader\esp-idf\esptool_py && python C:/Espressif/frameworks/esp-idf-v5.4/components/partition_table/check_sizes.py --offset 0x10000 bootloader 0x1000 C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/bootloader/bootloader.bin"
+Bootloader binary size 0x7160 bytes. 0x7ea0 bytes (53%) free.
+[2/7] No install step for 'bootloader'
+[3/7] Completed 'bootloader'
+[4/7] Linking CXX executable oximetro-hr.elf
+FAILED: oximetro-hr.elf 
+C:\WINDOWS\system32\cmd.exe /C "cd . && C:\Users\lenovo\.espressif\tools\xtensa-esp-elf\esp-14.2.0_20241119\xtensa-esp-elf\bin\xtensa-esp32-elf-g++.exe -mlongcalls -Wno-frame-address  -fno-builtin-memcpy -fno-builtin-memset -fno-builtin-bzero -fno-builtin-stpcpy -fno-builtin-strncpy -Wl,--cref -Wl,--defsym=IDF_TARGET_ESP32=0 -Wl,--Map=C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/oximetro-hr.map -Wl,--no-warn-rwx-segments -Wl,--orphan-handling=warn -fno-rtti -fno-lto -Wl,--gc-sections -Wl,--warn-common -T esp32.peripherals.ld -T esp32.rom.ld -T esp32.rom.api.ld -T esp32.rom.libgcc.ld -T esp32.rom.newlib-data.ld -T esp32.rom.syscalls.ld -T esp32.rom.newlib-funcs.ld -T memory.ld -T sections.ld @CMakeFiles\oximetro-hr.elf.rsp -o oximetro-hr.elf && cd ."
+C:/Users/lenovo/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/../lib/gcc/xtensa-esp-elf/14.2.0/../../../../xtensa-esp-elf/bin/ld.exe: esp-idf/main/libmain.a(algorithm.c.obj):(.literal.calculate_linear_regression+0x14): undefined reference to `somatoria_x2'
+C:/Users/lenovo/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/../lib/gcc/xtensa-esp-elf/14.2.0/../../../../xtensa-esp-elf/bin/ld.exe: esp-idf/main/libmain.a(algorithm.c.obj):(.literal.calculate_linear_regression+0x18): undefined reference to `sum_of_xy_elements'
+C:/Users/lenovo/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/../lib/gcc/xtensa-esp-elf/14.2.0/../../../../xtensa-esp-elf/bin/ld.exe: esp-idf/main/libmain.a(algorithm.c.obj): in function `calculate_linear_regression':
+C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/algorithm.c:51:(.text.calculate_linear_regression+0xe): undefined reference to `somatoria_x2'
+C:/Users/lenovo/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/../lib/gcc/xtensa-esp-elf/14.2.0/../../../../xtensa-esp-elf/bin/ld.exe: C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/main/algorithm.c:53:(.text.calculate_linear_regression+0x1a): undefined reference to `sum_of_xy_elements'
+collect2.exe: error: ld returned 1 exit status
+ninja: build stopped: subcommand failed.

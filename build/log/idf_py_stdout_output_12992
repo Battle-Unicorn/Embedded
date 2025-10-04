@@ -1,0 +1,7 @@
+[1/4] C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\lenovo\workspace-eclipse\max30102_esp32_oximeter\build\esp-idf\esptool_py && python C:/Espressif/frameworks/esp-idf-v5.4/components/partition_table/check_sizes.py --offset 0x10000 partition --type app C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/partition_table/partition-table.bin C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/oximetro-hr.bin"
+oximetro-hr.bin binary size 0x33320 bytes. Smallest app partition is 0x177000 bytes. 0x143ce0 bytes (86%) free.
+[2/4] Performing build step for 'bootloader'
+[1/1] C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\lenovo\workspace-eclipse\max30102_esp32_oximeter\build\bootloader\esp-idf\esptool_py && python C:/Espressif/frameworks/esp-idf-v5.4/components/partition_table/check_sizes.py --offset 0x10000 bootloader 0x1000 C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build/bootloader/bootloader.bin"
+Bootloader binary size 0x7160 bytes. 0x7ea0 bytes (53%) free.
+[3/4] No install step for 'bootloader'
+[4/4] Completed 'bootloader'

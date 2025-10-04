@@ -1,0 +1,10 @@
+[0;33m--- Warning: GDB cannot open serial ports accessed as COMx[0m
+[0;33m--- Using \\.\COM8 instead...[0m
+[0;33m--- esp-idf-monitor 1.5.0 on \\.\COM8 115200[0m
+[0;33m--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H[0m
+[0;33m--- 0x40080400: _init at ??:?
+[0m
+[1;31m--- Error: ClearCommError failed (PermissionError(13, 'Odmowa dostępu.', None, 5))[0m
+[0;33m--- Waiting for the device to reconnect[0m[0;33m.[0m[0;33m.[0m[0;33m.[0m[0;33m[0m
+[0;33m--- Warning: Checksum mismatch between flashed and built applications. Checksum of built application is 687340532da32b05c5551364c3a21f32bc14650e3cfcb1df42448200d42ae1c5[0m
+[0m
