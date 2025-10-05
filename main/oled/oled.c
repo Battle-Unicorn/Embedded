@@ -18,11 +18,11 @@
 #include "oled.h"
 
 // Pin definitions
-#define MOSI 5
-#define SCLK 18
-#define CS   17
-#define DC   21
-#define RESET 19
+#define MOSI 17
+#define SCLK 5
+#define CS   16
+#define DC   19
+#define RESET 18
 
 #define TAG "SSD1306"
 

@@ -1,7 +1,7 @@
 /*
  * max_30102_utils.c
- *
- * Updated with configuration from working driver and advanced algorithms
+ * 
+ * Updated to use i2cdev driver for compatibility with other I2C devices
  * Compatible with ESP-IDF 5
  *
  * Author: majorBien
@@ -13,7 +13,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <esp_log.h>
-#include <driver/i2c.h>
+#include <i2cdev.h>
 #include <string.h>
 #include "algorithm.h"
 
@@ -29,11 +29,8 @@ int32_t red_data_buffer[BUFFER_SIZE];
 int32_t ir_data_buffer[BUFFER_SIZE];
 double auto_correlationated_data[BUFFER_SIZE];
 
-// I2C settings
-#define I2C_MASTER_NUM I2C_NUM_1
-#define I2C_MASTER_FREQ_HZ 200000
-#define I2C_MASTER_SDA_GPIO 25
-#define I2C_MASTER_SCL_GPIO 26
+// I2C device handle
+static i2c_dev_t max30102_dev;
 
 // MAX30102 I2C address
 #define MAX30102_I2C_ADDRESS 0x57
@@ -64,75 +61,21 @@ double auto_correlationated_data[BUFFER_SIZE];
 // Sampling delay (in milliseconds)
 #define SAMPLE_DELAY_MS 10
 
-// --- Low level I2C helpers (combined transactions) ---
+// I2C settings (should match your hardware configuration)
+#define I2C_MASTER_NUM I2C_NUM_1
+#define I2C_MASTER_SDA_GPIO 25
+#define I2C_MASTER_SCL_GPIO 26
+
+// --- Low level I2C helpers using i2cdev ---
 
 static esp_err_t max30102_register_write_byte(uint8_t reg_addr, uint8_t data)
 {
-    i2c_cmd_handle_t cmd = i2c_cmd_link_create();
-    i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, (MAX30102_I2C_ADDRESS << 1) | I2C_MASTER_WRITE, true);
-    i2c_master_write_byte(cmd, reg_addr, true);
-    i2c_master_write_byte(cmd, data, true);
-    i2c_master_stop(cmd);
-    esp_err_t ret = i2c_master_cmd_begin(I2C_MASTER_NUM, cmd, pdMS_TO_TICKS(1000));
-    i2c_cmd_link_delete(cmd);
-    if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "I2C write failed reg 0x%02x (err 0x%x)", reg_addr, ret);
-    }
-    return ret;
+    return i2c_dev_write_reg(&max30102_dev, reg_addr, &data, 1);
 }
 
 static esp_err_t max30102_register_read(uint8_t reg_addr, uint8_t *data, size_t len)
 {
-    if (len == 0) return ESP_OK;
-
-    i2c_cmd_handle_t cmd = i2c_cmd_link_create();
-    i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, (MAX30102_I2C_ADDRESS << 1) | I2C_MASTER_WRITE, true);
-    i2c_master_write_byte(cmd, reg_addr, true);
-    i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, (MAX30102_I2C_ADDRESS << 1) | I2C_MASTER_READ, true);
-
-    if (len > 1) {
-        i2c_master_read(cmd, data, len - 1, I2C_MASTER_ACK);
-    }
-    i2c_master_read_byte(cmd, data + len - 1, I2C_MASTER_NACK);
-    i2c_master_stop(cmd);
-
-    esp_err_t ret = i2c_master_cmd_begin(I2C_MASTER_NUM, cmd, pdMS_TO_TICKS(1000));
-    i2c_cmd_link_delete(cmd);
-    if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "I2C read failed reg 0x%02x (err 0x%x)", reg_addr, ret);
-    }
-    return ret;
-}
-
-// Init I2C
-static esp_err_t max30102_init_i2c(void)
-{
-    i2c_config_t conf = {
-        .mode = I2C_MODE_MASTER,
-        .sda_io_num = I2C_MASTER_SDA_GPIO,
-        .scl_io_num = I2C_MASTER_SCL_GPIO,
-        .sda_pullup_en = GPIO_PULLUP_ENABLE,
-        .scl_pullup_en = GPIO_PULLUP_ENABLE,
-        .master.clk_speed = I2C_MASTER_FREQ_HZ,
-    };
-
-    esp_err_t ret = i2c_param_config(I2C_MASTER_NUM, &conf);
-    if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "I2C param config failed: 0x%x", ret);
-        return ret;
-    }
-
-    ret = i2c_driver_install(I2C_MASTER_NUM, conf.mode, 0, 0, 0);
-    if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "I2C driver install failed: 0x%x", ret);
-        return ret;
-    }
-
-    ESP_LOGI(TAG, "I2C initialised successfully");
-    return ESP_OK;
+    return i2c_dev_read_reg(&max30102_dev, reg_addr, data, len);
 }
 
 static esp_err_t max30102_reset(void)
@@ -166,6 +109,23 @@ static esp_err_t max30102_init(void)
 {
     esp_err_t ret;
     ESP_LOGI(TAG, "Initialising MAX30102...");
+
+    // Initialize i2c_dev structure
+    memset(&max30102_dev, 0, sizeof(i2c_dev_t));
+    max30102_dev.port = I2C_MASTER_NUM;
+    max30102_dev.addr = MAX30102_I2C_ADDRESS;
+    max30102_dev.cfg.sda_io_num = I2C_MASTER_SDA_GPIO;
+    max30102_dev.cfg.scl_io_num = I2C_MASTER_SCL_GPIO;
+    max30102_dev.cfg.master.clk_speed = 200000; // 200kHz
+    max30102_dev.cfg.sda_pullup_en = GPIO_PULLUP_ENABLE;
+    max30102_dev.cfg.scl_pullup_en = GPIO_PULLUP_ENABLE;
+
+    // Probe device
+    ret = i2c_dev_probe(&max30102_dev, I2C_DEV_WRITE);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "MAX30102 not found");
+        return ret;
+    }
 
     uint8_t part_id = 0;
     ret = max30102_register_read(REG_PART_ID, &part_id, 1);
@@ -253,19 +213,8 @@ static esp_err_t max30102_read_fifo_once(int32_t *red, int32_t *ir)
     if (!red || !ir) return ESP_ERR_INVALID_ARG;
 
     uint8_t raw[6] = {0};
-
-    i2c_cmd_handle_t cmd = i2c_cmd_link_create();
-    i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, (MAX30102_I2C_ADDRESS << 1) | I2C_MASTER_WRITE, true);
-    i2c_master_write_byte(cmd, REG_FIFO_DATA, true);
-    i2c_master_start(cmd);
-    i2c_master_write_byte(cmd, (MAX30102_I2C_ADDRESS << 1) | I2C_MASTER_READ, true);
-    i2c_master_read(cmd, raw, 5, I2C_MASTER_ACK);
-    i2c_master_read_byte(cmd, raw + 5, I2C_MASTER_NACK);
-    i2c_master_stop(cmd);
-
-    esp_err_t ret = i2c_master_cmd_begin(I2C_MASTER_NUM, cmd, pdMS_TO_TICKS(1000));
-    i2c_cmd_link_delete(cmd);
+    esp_err_t ret = max30102_register_read(REG_FIFO_DATA, raw, 6);
+    
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "Failed to read FIFO data (err 0x%x)", ret);
         *red = 0;
@@ -407,11 +356,8 @@ static void max30102_task(void *pvParameters)
 {
     ESP_LOGI(TAG, "MAX30102 task starting...");
 
-    if (max30102_init_i2c() != ESP_OK) {
-        ESP_LOGE(TAG, "I2C initialization failed");
-        vTaskDelete(NULL);
-        return;
-    }
+    // Wait a bit to ensure I2C is initialized by main application
+    vTaskDelay(pdMS_TO_TICKS(100));
 
     if (max30102_init() != ESP_OK) {
         ESP_LOGE(TAG, "MAX30102 initialization failed");
@@ -432,6 +378,7 @@ static void max30102_task(void *pvParameters)
 
 void max_task_start(void)
 {
+    // Note: i2cdev_init() should be called once in main application
     xTaskCreate(max30102_task, "max30102_task", 4096, NULL, 5, NULL);
     ESP_LOGI(TAG, "MAX30102 task created");
 }

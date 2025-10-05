@@ -12,7 +12,7 @@
 #include "sntp/sntp.h"
 #include "oled/oled.h"
 #include "max30102_utils/max30102_utils.h"
-//#include "max30102/max30102_config.h" old
+#include "i2cdev.h"
 
 void app_main(void) {
     esp_err_t ret;
@@ -28,11 +28,11 @@ void app_main(void) {
     ESP_LOGI("MAIN", "NVS initialized successfully");
     
     // Start sensor tasks
-    //mpu_task_start();
-    //emg_task_start();
+    ESP_ERROR_CHECK(i2cdev_init());
+    mpu_task_start();
+    emg_task_start();
     max_task_start();
-    //max30102_task_start(); old
-/*    
+ 
     // Wait for sensors to initialize
     vTaskDelay(pdMS_TO_TICKS(2000));
     
@@ -84,5 +84,5 @@ void app_main(void) {
 	//print time
 	ESP_LOGI("MAIN", "Current time: %s", sntp_get_time_string());
 	oled_task_start();
-	*/
+	
 }
