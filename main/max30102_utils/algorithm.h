@@ -39,4 +39,3 @@ double auto_correlation_function(int32_t *data, int32_t lag);
 #endif
 
 
-

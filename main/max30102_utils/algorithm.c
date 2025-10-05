@@ -1,10 +1,9 @@
 /*
  * algorithm.c
  *
- *  Created on: 5 paź 2025
+ *  Created on: 5 Oct 2025
  *      Author: majorBien
  */
-
 
 #include "algorithm.h"
 #include <math.h>
@@ -196,4 +195,3 @@ double rms_value(int32_t *data)
         sum += ((double)data[i] * data[i]);
     return sqrt(sum / BUFFER_SIZE);
 }
-

@@ -194,6 +194,5 @@ static void mpu6050_task(void *pvParameters)
 
 void mpu_task_start(void)
 {
-    ESP_ERROR_CHECK(i2cdev_init());
     xTaskCreate(mpu6050_task, "mpu6050_task", configMINIMAL_STACK_SIZE * 8, NULL, 5, NULL);
 }

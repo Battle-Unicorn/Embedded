@@ -1,6 +1,6 @@
 /*
  * max_30102_utils.c
- * 
+ *
  * Updated to use i2cdev driver for compatibility with other I2C devices
  * Compatible with ESP-IDF 5
  *
@@ -47,11 +47,11 @@ static i2c_dev_t max30102_dev;
 #define REG_FIFO_CONFIG     0x08
 #define REG_MODE_CONFIG     0x09
 #define REG_SPO2_CONFIG     0x0A
-#define REG_LED1_PA         0x0C
-#define REG_LED2_PA         0x0D
-#define REG_PILOT_PA        0x10
-#define REG_MULTI_LED_CTRL1 0x11
-#define REG_MULTI_LED_CTRL2 0x12
+#define REG_LED1_PA         0x0C // Red LED pulse amplitude register
+#define REG_LED2_PA         0x0D // IR LED pulse amplitude register
+#define REG_PILOT_PA        0x10 // Pilot LED pulse amplitude (if available on your variant)
+#define REG_MULTI_LED_CTRL1 0x11 // Multi-LED mode control (slots 1/2)
+#define REG_MULTI_LED_CTRL2 0x12 // Multi-LED mode control (slots 3/4)
 #define REG_TEMP_INTR       0x1F
 #define REG_TEMP_FRAC       0x20
 #define REG_TEMP_CONFIG     0x21
@@ -110,43 +110,26 @@ static esp_err_t max30102_init(void)
     esp_err_t ret;
     ESP_LOGI(TAG, "Initialising MAX30102...");
 
-    // Initialize i2c_dev structure
     memset(&max30102_dev, 0, sizeof(i2c_dev_t));
     max30102_dev.port = I2C_MASTER_NUM;
     max30102_dev.addr = MAX30102_I2C_ADDRESS;
     max30102_dev.cfg.sda_io_num = I2C_MASTER_SDA_GPIO;
     max30102_dev.cfg.scl_io_num = I2C_MASTER_SCL_GPIO;
-    max30102_dev.cfg.master.clk_speed = 200000; // 200kHz
+    max30102_dev.cfg.master.clk_speed = 200000;
     max30102_dev.cfg.sda_pullup_en = GPIO_PULLUP_ENABLE;
     max30102_dev.cfg.scl_pullup_en = GPIO_PULLUP_ENABLE;
 
-    // Probe device
-    ret = i2c_dev_probe(&max30102_dev, I2C_DEV_WRITE);
-    if (ret != ESP_OK) {
+    if ((ret = i2c_dev_probe(&max30102_dev, I2C_DEV_WRITE)) != ESP_OK) {
         ESP_LOGE(TAG, "MAX30102 not found");
         return ret;
     }
 
     uint8_t part_id = 0;
-    ret = max30102_register_read(REG_PART_ID, &part_id, 1);
-    if (ret != ESP_OK) {
+    if ((ret = max30102_register_read(REG_PART_ID, &part_id, 1)) != ESP_OK) {
         ESP_LOGE(TAG, "Failed to read PART ID");
         return ret;
     }
     ESP_LOGI(TAG, "PART ID: 0x%02x", part_id);
-
-    if (part_id == 0xFF) {
-        ESP_LOGW(TAG, "PART ID is 0xFF, performing reset...");
-        ret = max30102_reset();
-        if (ret != ESP_OK) return ret;
-
-        ret = max30102_register_read(REG_PART_ID, &part_id, 1);
-        if (ret != ESP_OK) {
-            ESP_LOGE(TAG, "Failed to read PART ID after reset");
-            return ret;
-        }
-        ESP_LOGI(TAG, "PART ID after reset: 0x%02x", part_id);
-    }
 
     // Clear FIFO pointers
     ESP_LOGI(TAG, "Clearing FIFO pointers...");
@@ -154,58 +137,46 @@ static esp_err_t max30102_init(void)
     if ((ret = max30102_register_write_byte(REG_OVF_COUNTER, 0x00)) != ESP_OK) return ret;
     if ((ret = max30102_register_write_byte(REG_FIFO_RD_PTR, 0x00)) != ESP_OK) return ret;
 
-    // FIFO config: SMP_AVE = 0b010 (4 samples average), FIFO_ROLLOVER = 1, A_FULL = 0
-    ESP_LOGI(TAG, "Configuring FIFO...");
-    if ((ret = max30102_register_write_byte(REG_FIFO_CONFIG, 0x50)) != ESP_OK) return ret;
+    // FIFO config: no averaging, rollover off, A_FULL = 0 (fastest raw stream)
+    ESP_LOGI(TAG, "Configuring FIFO (no averaging)...");
+    if ((ret = max30102_register_write_byte(REG_FIFO_CONFIG, 0x00)) != ESP_OK) return ret;
 
-    // Set mode to SPO2 (0x03)
-    ESP_LOGI(TAG, "Setting SPO2 mode...");
-    if ((ret = max30102_register_write_byte(REG_MODE_CONFIG, 0x03)) != ESP_OK) return ret;
+    // --- Mode settings: Multi-LED mode (MODE[2:0] = 111)
+    // Multi-LED mode allows explicit assignment of slots (here: SLOT1 = RED, SLOT2 = IR)
+    ESP_LOGI(TAG, "Setting Multi-LED mode (RED+IR)...");
+    if ((ret = max30102_register_write_byte(REG_MODE_CONFIG, 0x07)) != ESP_OK) return ret;
 
-    // SPO2 config: ADC range = 01, SR = 001 (200 samples/sec), PW = 10 (215µs)
-    ESP_LOGI(TAG, "Configuring SPO2...");
-    if ((ret = max30102_register_write_byte(REG_SPO2_CONFIG, 0x26)) != ESP_OK) return ret;
+    // SPO2 config: ADC range = 11 (largest), SR = 010 (200 sps), PW = 10 (215 us)
+    // bits: [6:5]=11, [4:2]=010, [1:0]=10  => 0x6A
+    ESP_LOGI(TAG, "Configuring SPO2 (ADC range=max, 200sps, PW=215us)...");
+    if ((ret = max30102_register_write_byte(REG_SPO2_CONFIG, 0x6A)) != ESP_OK) return ret;
 
-    // LED currents - zgodnie z working driver
-    ESP_LOGI(TAG, "Configuring LED current...");
-    if ((ret = max30102_register_write_byte(REG_LED1_PA, 0x24)) != ESP_OK) return ret; // RED - 25.4mA
-    if ((ret = max30102_register_write_byte(REG_LED2_PA, 0x24)) != ESP_OK) return ret; // IR - 25.4mA
-    if ((ret = max30102_register_write_byte(REG_PILOT_PA, 0x7F)) != ESP_OK) return ret;
+    // LED currents -> MAX (0xFF ≈ 51 mA typical)
+    ESP_LOGI(TAG, "Setting LED currents to MAX (0xFF)...");
+    if ((ret = max30102_register_write_byte(REG_LED1_PA, 0xFF)) != ESP_OK) return ret; // RED
+    if ((ret = max30102_register_write_byte(REG_LED2_PA, 0xFF)) != ESP_OK) return ret; // IR
+    // if your hardware exposes REG_PILOT_PA you can also set it, but the MAX30102 datasheet does not always expose it
+    // if ((ret = max30102_register_write_byte(REG_PILOT_PA, 0xFF)) != ESP_OK) return ret;
 
-    // Multi-LED control: ALL SLOTS DISABLED (0x00) - zgodnie z working driver
-    ESP_LOGI(TAG, "Configuring multi-LED control...");
-    if ((ret = max30102_register_write_byte(REG_MULTI_LED_CTRL1, 0x00)) != ESP_OK) return ret;
-    if ((ret = max30102_register_write_byte(REG_MULTI_LED_CTRL2, 0x00)) != ESP_OK) return ret;
+    // Multi-LED slot mapping:
+    // REG_MULTI_LED_CTRL1 (0x11): [7:5]=SLOT2, [2:0]=SLOT1
+    // SLOT1 = 001 (LED1/RED), SLOT2 = 010 (LED2/IR) => 0b010 000 001 = 0x41
+    ESP_LOGI(TAG, "Configuring multi-LED slots (SLOT1=RED, SLOT2=IR)...");
+    if ((ret = max30102_register_write_byte(REG_MULTI_LED_CTRL1, 0x41)) != ESP_OK) return ret;
+    if ((ret = max30102_register_write_byte(REG_MULTI_LED_CTRL2, 0x00)) != ESP_OK) return ret; // SLOT3/4 disabled
 
-    // Interrupt enable: A_FULL (bit7) + PPG_RDY (bit6)
+    // Interrupts: enable PPG_RDY (bit6) and optionally A_FULL (bit7) if you want FIFO notifications
     ESP_LOGI(TAG, "Configuring interrupts...");
     if ((ret = max30102_register_write_byte(REG_INTR_ENABLE_1, 0xC0)) != ESP_OK) return ret;
     if ((ret = max30102_register_write_byte(REG_INTR_ENABLE_2, 0x00)) != ESP_OK) return ret;
 
     vTaskDelay(pdMS_TO_TICKS(50));
 
-    // Verify configuration
-    uint8_t mode_reg = 0, spo2_reg = 0, led1_reg = 0, led2_reg = 0, multi_led_reg = 0, fifo_conf = 0, intr_en1 = 0;
-    max30102_register_read(REG_MODE_CONFIG, &mode_reg, 1);
-    max30102_register_read(REG_SPO2_CONFIG, &spo2_reg, 1);
-    max30102_register_read(REG_LED1_PA, &led1_reg, 1);
-    max30102_register_read(REG_LED2_PA, &led2_reg, 1);
-    max30102_register_read(REG_MULTI_LED_CTRL1, &multi_led_reg, 1);
-    max30102_register_read(REG_FIFO_CONFIG, &fifo_conf, 1);
-    max30102_register_read(REG_INTR_ENABLE_1, &intr_en1, 1);
-
-    ESP_LOGI(TAG, "Configuration verification:");
-    ESP_LOGI(TAG, "MODE_CONFIG: 0x%02x", mode_reg);
-    ESP_LOGI(TAG, "SPO2_CONFIG: 0x%02x", spo2_reg);
-    ESP_LOGI(TAG, "LED1_PA: 0x%02x", led1_reg);
-    ESP_LOGI(TAG, "LED2_PA: 0x%02x", led2_reg);
-    ESP_LOGI(TAG, "MULTI_LED_CTRL1: 0x%02x", multi_led_reg);
-    ESP_LOGI(TAG, "FIFO_CONFIG: 0x%02x", fifo_conf);
-    ESP_LOGI(TAG, "INTR_ENABLE_1: 0x%02x", intr_en1);
-
-    ESP_LOGI(TAG, "MAX30102 initialised successfully");
+    // optional register verification (as in your original)...
+    ESP_LOGI(TAG, "MAX30102 initialised in FULL-POWER mode");
     return ESP_OK;
 }
+
 
 // Read one FIFO sample (red + ir)
 static esp_err_t max30102_read_fifo_once(int32_t *red, int32_t *ir)
@@ -332,7 +303,7 @@ static void max30102_processing_task(void *pvParameters)
         heart_rate = calculate_heart_rate(ir_data_buffer, &r0_autocorrelation, auto_correlationated_data);
 
         // Log sensor data
-        ESP_LOGI(TAG, "HR: %d bpm, Corr: %.3f, Temp: %.1f C", 
+/*        ESP_LOGI(TAG, "HR: %d bpm, Corr: %.3f, Temp: %.1f C",
                 heart_rate, pearson_correlation, temperature);
 
         // If IR and RED signals are strongly correlated, compute SpO2
@@ -342,7 +313,7 @@ static void max30102_processing_task(void *pvParameters)
         } else {
             spo2_value = 0.0;
             ESP_LOGW(TAG, "SpO2: skipped (weak correlation: %.3f)", pearson_correlation);
-        }
+        }*/
 
         // Diagnostics every 100 cycles
         static int cycle_count = 0;
@@ -369,7 +340,7 @@ static void max30102_task(void *pvParameters)
 
     // Start processing task
     xTaskCreate(max30102_processing_task, "max30102_processing", 8192, NULL, 5, NULL);
-
+    
     // Keep this task alive but not doing much
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(1000));

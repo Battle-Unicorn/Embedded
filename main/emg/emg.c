@@ -19,6 +19,7 @@ static float alpha_dc = 0.01f;
 
 // Envelope tracking
 static float envelope = 0.0f;
+bool atonia_flag = false;
 
 int read_emg_sample(void) {
     int raw = adc1_get_raw(EMG_ADC_CHANNEL);
@@ -147,8 +148,8 @@ static void emg_task(void *pvParameters) {
         // Display values every second
         sample_count++;
         if (xTaskGetTickCount() - last_log_time >= pdMS_TO_TICKS(1000)) {
-            //ESP_LOGI(TAG, "Raw: %d, DC_removed: %.1f, Filtered: %.2f, Envelope: %.2f, mV: %.2f",
-			//		 raw_sample, dc_removed, filtered, current_envelope, raw_to_mv(current_envelope));
+            ESP_LOGI(TAG, "Raw: %d, DC_removed: %.1f, Filtered: %.2f, Envelope: %.2f, mV: %.2f",
+					 raw_sample, dc_removed, filtered, current_envelope, raw_to_mv(current_envelope));
             last_log_time = xTaskGetTickCount();
         }
     }
