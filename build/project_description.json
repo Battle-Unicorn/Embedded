@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "oximetro-hr",
-    "project_version":    "2696785-dirty",
+    "project_version":    "613e126-dirty",
     "project_path":       "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter",
     "idf_path":           "C:/Espressif/frameworks/esp-idf-v5.4",
     "build_dir":          "C:/Users/lenovo/workspace-eclipse/max30102_esp32_oximeter/build",

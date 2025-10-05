@@ -27,6 +27,8 @@ void app_main(void) {
 
     ESP_LOGI("MAIN", "NVS initialized successfully");
     
+    oled_task_start();
+    
     // Start sensor tasks
     ESP_ERROR_CHECK(i2cdev_init());
     mpu_task_start();
@@ -83,6 +85,6 @@ void app_main(void) {
 	
 	//print time
 	ESP_LOGI("MAIN", "Current time: %s", sntp_get_time_string());
-	oled_task_start();
+
 	
 }
