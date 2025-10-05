@@ -4,6 +4,12 @@
  *  Created on: 4 paź 2025
  *      Author: majorBien
  */
+/*
+ * http_client.c
+ *
+ *  Created on: 4 paź 2025
+ *  Author: majorBien
+ */
 #include "http_client.h"
 
 #include <string.h>
@@ -11,152 +17,275 @@
 #include "esp_http_client.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/queue.h"
 #include "esp_wifi.h"
 #include "esp_err.h"
 #include "time.h"
+#include "cJSON.h"
 
 /* Tag used for ESP logging */
 static const char *TAG = "http_client";
 
-/* Server configuration */
-#define SERVER_IP      "192.168.8.102"
-#define SERVER_PORT    8080
-#define FLAGS_ENDPOINT    "/embedded/flags"
-#define POST_INTERVAL_MS (30000) /* 30 seconds */
+/* Task handle for the background POST task */
+static TaskHandle_t s_http_task_handle = NULL;
 
+/* Queue for EMG samples */
+static QueueHandle_t s_emg_queue = NULL;
+#define EMG_QUEUE_SIZE 50
+#define MAX_EMG_SAMPLES_PER_POST 30  /* Send max 30 samples per POST */
+
+/* The JSON payload buffers */
+static char s_flags_payload[1024] = {0};
+static char s_emg_payload[4096] = {0}; /* Larger buffer for EMG data */
+
+/* External variables */
 extern bool atonia_flag;
 extern bool sleep_flag;
 extern float temp;
 
-
-/* Task handle for the background POST task */
-static TaskHandle_t s_http_task_handle = NULL;
-
-/* The JSON payload to send */
-static char s_payload[2048] = {0};
-
-/* Helper: build server URL string */
-static void build_url(char *out, size_t out_len)
+/* Helper: build server URL string for different endpoints */
+static void build_url(char *out, size_t out_len, const char *endpoint)
 {
     /* Format: http://<ip>:<port><path> */
-    snprintf(out, out_len, "http://%s:%d%s", SERVER_IP, SERVER_PORT, FLAGS_ENDPOINT);
+    snprintf(out, out_len, "http://%s:%d%s", SERVER_IP, SERVER_PORT, endpoint);
 }
 
-/* The background task that repeatedly POSTs the JSON payload */
-static void http_post_task(void *arg)
+/* Build flags JSON payload */
+static void build_flags_payload(void)
 {
-    ESP_LOGI(TAG, "HTTP POST task started");
+    /* Get current timestamp */
+    time_t now;
+    time(&now);
+    struct tm *timeinfo = gmtime(&now);
+    char time_str[25];
+    strftime(time_str, sizeof(time_str), "%Y-%m-%dT%H:%M:%SZ", timeinfo);
 
-    char url[128];
-    build_url(url, sizeof(url));
+    /* Get WiFi RSSI */
+    wifi_ap_record_t ap_info;
+    esp_err_t ret = esp_wifi_sta_get_ap_info(&ap_info);
+    int8_t rssi = 0;
+    if (ret == ESP_OK) {
+        rssi = ap_info.rssi;
+    }
 
-    /* Configure the http client */
+    /* Build JSON payload for flags */
+    snprintf(s_flags_payload, sizeof(s_flags_payload),
+             "{\"device_id\":\"Dev_001\",\"timestamp\":\"%s\",\"flags\":{\"sleep_flag\":%s,\"atonia_flag\":%s},"
+             "\"system_info\":{\"battery_level\":82,\"signal_strength\":%d,\"body_temperature\":%.1f,\"last_calibration\":\"2025-09-24T20:00:00Z\"}}",
+             time_str,
+             sleep_flag ? "true" : "false",
+             atonia_flag ? "true" : "false",
+             rssi,
+             temp);
+}
+
+/* Build EMG JSON payload from samples in queue */
+static size_t build_emg_payload(void)
+{
+    cJSON *root = cJSON_CreateObject();
+    cJSON *emg_obj = cJSON_CreateObject();
+    cJSON *samples_array = cJSON_CreateArray();
+
+    if (!root || !emg_obj || !samples_array) {
+        ESP_LOGE(TAG, "Failed to create JSON objects");
+        if (root) cJSON_Delete(root);
+        return 0;
+    }
+
+    /* Get current timestamp for the request */
+    time_t now;
+    time(&now);
+    struct tm *timeinfo = gmtime(&now);
+    char time_str[25];
+    strftime(time_str, sizeof(time_str), "%Y-%m-%dT%H:%M:%SZ", timeinfo);
+
+    /* Add device info */
+    cJSON_AddStringToObject(root, "device_id", "Dev_001");
+    cJSON_AddStringToObject(root, "timestamp", time_str);
+
+    /* Collect samples from queue (up to MAX_EMG_SAMPLES_PER_POST) */
+    emg_sample_t sample;
+    int samples_collected = 0;
+    
+    while (samples_collected < MAX_EMG_SAMPLES_PER_POST && 
+           xQueueReceive(s_emg_queue, &sample, 0) == pdTRUE) {
+        
+        cJSON *sample_obj = cJSON_CreateObject();
+        if (sample_obj) {
+            cJSON_AddStringToObject(sample_obj, "timestamp", sample.timestamp);
+            cJSON_AddNumberToObject(sample_obj, "envelope", sample.envelope);
+            cJSON_AddItemToArray(samples_array, sample_obj);
+            samples_collected++;
+        }
+    }
+
+    ESP_LOGI(TAG, "Collected %d EMG samples for POST", samples_collected);
+
+    /* Build the complete EMG object */
+    cJSON_AddItemToObject(emg_obj, "samples", samples_array);
+    cJSON_AddItemToObject(root, "emg", emg_obj);
+
+    /* Serialize to string */
+    char *json_str = cJSON_PrintUnformatted(root);
+    if (json_str) {
+        size_t json_len = strlen(json_str);
+        if (json_len < sizeof(s_emg_payload)) {
+            strncpy(s_emg_payload, json_str, sizeof(s_emg_payload));
+            s_emg_payload[sizeof(s_emg_payload) - 1] = '\0';
+        } else {
+            ESP_LOGW(TAG, "EMG payload too large: %d > %d", json_len, sizeof(s_emg_payload));
+            json_len = 0;
+        }
+        free(json_str);
+        cJSON_Delete(root);
+        return json_len;
+    }
+
+    cJSON_Delete(root);
+    return 0;
+}
+
+/* Send HTTP POST request */
+static esp_err_t send_http_post(const char *url, const char *payload, const char *endpoint_name)
+{
     esp_http_client_config_t config = {
         .url = url,
         .method = HTTP_METHOD_POST,
         .timeout_ms = 10000, /* 10 s timeout */
     };
 
+    esp_http_client_handle_t client = esp_http_client_init(&config);
+    if (client == NULL) {
+        ESP_LOGE(TAG, "Failed to initialize HTTP client for %s", endpoint_name);
+        return ESP_ERR_NO_MEM;
+    }
+
+    /* Set headers */
+    esp_err_t err = esp_http_client_set_header(client, "Content-Type", "application/json");
+    if (err != ESP_OK) {
+        ESP_LOGW(TAG, "Failed to set header for %s: %s", endpoint_name, esp_err_to_name(err));
+    }
+    
+    err = esp_http_client_set_post_field(client, payload, strlen(payload));
+    if (err != ESP_OK) {
+        ESP_LOGW(TAG, "Failed to set POST field for %s: %s", endpoint_name, esp_err_to_name(err));
+    }
+
+    /* Perform the POST */
+    err = esp_http_client_perform(client);
+    if (err == ESP_OK) {
+        int status = esp_http_client_get_status_code(client);
+        ESP_LOGI(TAG, "%s POST succeeded, status=%d", endpoint_name, status);
+    } else {
+        ESP_LOGE(TAG, "%s HTTP POST failed: %s", endpoint_name, esp_err_to_name(err));
+    }
+
+    esp_http_client_cleanup(client);
+    return err;
+}
+
+/* The background task that repeatedly POSTs data */
+static void http_post_task(void *arg)
+{
+    ESP_LOGI(TAG, "HTTP POST task started");
+
+    char flags_url[128];
+    char emg_url[128];
+    
+    build_url(flags_url, sizeof(flags_url), FLAGS_ENDPOINT);
+    build_url(emg_url, sizeof(emg_url), EMG_ENDPOINT);
+
     while (1) {
-        /* Create client for each iteration to ensure clean state */
-        esp_http_client_handle_t client = esp_http_client_init(&config);
-        if (client == NULL) {
-            ESP_LOGE(TAG, "Failed to initialize HTTP client (ESP_ERR_NO_MEM or other).");
-            /* If client cannot be created, wait and retry later */
-            vTaskDelay(pdMS_TO_TICKS(POST_INTERVAL_MS));
-            continue;
-        }
+        /* Send flags data */
+        build_flags_payload();
+        send_http_post(flags_url, s_flags_payload, "flags");
 
-        /* Set header and body */
-        esp_err_t err = esp_http_client_set_header(client, "Content-Type", "application/json");
-        if (err != ESP_OK) {
-            ESP_LOGW(TAG, "Failed to set header: %s", esp_err_to_name(err));
-        }
-        
-        //create JSON payload
-		/*draft:{
-  "device_id": "Dev_001",
-  "timestamp": "2025-09-24T23:45:12Z",
-  "flags": {
-    "sleep_flag": true,
-    "atonia_flag": true
-  },
-  "system_info": {
-    "battery_level": 82,
-    "signal_strength": 89,
-    "device_temperature": 36.9,
-    "last_calibration": "2025-09-24T20:00:00Z"
-    time from time.h
-  }
-}*/
-		wifi_ap_record_t ap_info;
-		esp_err_t ret = esp_wifi_sta_get_ap_info(&ap_info);
-		int8_t rssi = 0;
-		if (ret == ESP_OK) {
-		    rssi = ap_info.rssi; // RSSI w dBm, np. -45
-		    printf("RSSI: %d dBm\n", rssi);
-		} else {
-		    printf("esp_wifi_sta_get_ap_info failed: %d\n", ret);
-		    
-		}        
-		time_t now;
-		time(&now);
-		struct tm *timeinfo = gmtime(&now);
-		char time_str[25];
-		strftime(time_str, sizeof(time_str), "%Y-%m-%dT%H:%M:%SZ", timeinfo);
-				snprintf(s_payload, sizeof(s_payload),
-				 "{\"device_id\":\"Dev_001\",\"timestamp\":\"%s\",\"flags\":{\"sleep_flag\":%s,\"atonia_flag\":%s},"
-				 "\"system_info\":{\"battery_level\":82,\"signal_strength\":%d,\"body_temperature\":%.1f,\"last_calibration\":\"2025-09-24T20:00:00Z\"}}",
-				 time_str,
-				 sleep_flag ? "true" : "false",
-				 atonia_flag ? "true" : "false",
-				 rssi,
-				 temp);
-
-        err = esp_http_client_set_post_field(client, s_payload, strlen(s_payload));
-        if (err != ESP_OK) {
-            ESP_LOGW(TAG, "Failed to set POST field: %s", esp_err_to_name(err));
-        }
-
-        /* Perform the POST */
-        err = esp_http_client_perform(client);
-        if (err == ESP_OK) {
-            int status = esp_http_client_get_status_code(client);
-            int content_len = esp_http_client_get_content_length(client);
-            ESP_LOGI(TAG, "POST succeeded, status=%d, content_length=%d", status, content_len);
-            /* Optionally you could read response body here using esp_http_client_read if needed */
+        /* Send EMG data if available */
+        size_t emg_payload_size = build_emg_payload();
+        if (emg_payload_size > 0) {
+            send_http_post(emg_url, s_emg_payload, "EMG");
         } else {
-            /* Common errors: ESP_ERR_HTTP_CONN, ESP_ERR_HTTP_FETCH_HEADER, ESP_ERR_HTTP_EAGAIN */
-            ESP_LOGE(TAG, "HTTP POST failed: %s", esp_err_to_name(err));
+            ESP_LOGI(TAG, "No EMG data to send");
         }
-
-        esp_http_client_cleanup(client);
 
         /* Sleep for configured interval */
         vTaskDelay(pdMS_TO_TICKS(POST_INTERVAL_MS));
     }
 
-    /* Should never reach here, but delete task if it does */
     vTaskDelete(NULL);
 }
 
 /**
- * Start the HTTP client background task.
+ * Initialize EMG data queue
  *
  * Returns:
- *   - ESP_OK: task created successfully.
- *   - ESP_ERR_NO_MEM: not enough memory to create task.
- *   - ESP_ERR_INVALID_STATE: already started.
- *   - ESP_FAIL: other failure.
+ *   - ESP_OK: queue created successfully
+ *   - ESP_ERR_NO_MEM: not enough memory for queue
+ */
+esp_err_t http_client_init_emg_queue(void)
+{
+    if (s_emg_queue != NULL) {
+        ESP_LOGW(TAG, "EMG queue already initialized");
+        return ESP_ERR_INVALID_STATE;
+    }
+
+    s_emg_queue = xQueueCreate(EMG_QUEUE_SIZE, sizeof(emg_sample_t));
+    if (s_emg_queue == NULL) {
+        ESP_LOGE(TAG, "Failed to create EMG queue");
+        return ESP_ERR_NO_MEM;
+    }
+
+    ESP_LOGI(TAG, "EMG queue created with size %d", EMG_QUEUE_SIZE);
+    return ESP_OK;
+}
+
+/**
+ * Send EMG sample to queue for later transmission
  *
- * Note:
- *   The HTTP client task will run indefinitely until http_client_stop() is called.
+ * Parameters:
+ *   - sample: pointer to EMG sample structure
+ *
+ * Returns:
+ *   - pdTRUE: sample sent successfully
+ *   - pdFALSE: queue full or error
+ */
+BaseType_t http_client_send_emg_sample(const emg_sample_t *sample)
+{
+    if (s_emg_queue == NULL) {
+        ESP_LOGE(TAG, "EMG queue not initialized");
+        return pdFALSE;
+    }
+
+    BaseType_t result = xQueueSend(s_emg_queue, sample, 0); /* Non-blocking */
+    if (result != pdTRUE) {
+        ESP_LOGW(TAG, "EMG queue full, sample dropped");
+    }
+    
+    return result;
+}
+
+/**
+ * Start the HTTP client background task
+ *
+ * Returns:
+ *   - ESP_OK: task created successfully
+ *   - ESP_ERR_NO_MEM: not enough memory to create task
+ *   - ESP_ERR_INVALID_STATE: already started
  */
 esp_err_t http_client_start(void)
 {
     if (s_http_task_handle != NULL) {
         ESP_LOGW(TAG, "HTTP client task already running");
         return ESP_ERR_INVALID_STATE;
+    }
+
+    /* Initialize EMG queue if not already done */
+    if (s_emg_queue == NULL) {
+        esp_err_t ret = http_client_init_emg_queue();
+        if (ret != ESP_OK) {
+            ESP_LOGE(TAG, "Failed to initialize EMG queue");
+            return ret;
+        }
     }
 
     BaseType_t r = xTaskCreatePinnedToCore(
@@ -171,7 +300,7 @@ esp_err_t http_client_start(void)
 
     if (r != pdPASS) {
         s_http_task_handle = NULL;
-        ESP_LOGE(TAG, "Failed to create HTTP client task (out of memory?)");
+        ESP_LOGE(TAG, "Failed to create HTTP client task");
         return ESP_ERR_NO_MEM;
     }
 
@@ -180,9 +309,7 @@ esp_err_t http_client_start(void)
 }
 
 /**
- * Stop the HTTP client background task and cleanup.
- *
- * This will delete the task and set the handle to NULL. Safe to call even if not started.
+ * Stop the HTTP client background task and cleanup
  */
 void http_client_stop(void)
 {
@@ -191,8 +318,13 @@ void http_client_stop(void)
         return;
     }
 
-    /* Delete the task */
     vTaskDelete(s_http_task_handle);
     s_http_task_handle = NULL;
+    
+    if (s_emg_queue != NULL) {
+        vQueueDelete(s_emg_queue);
+        s_emg_queue = NULL;
+    }
+    
     ESP_LOGI(TAG, "HTTP client task stopped");
 }

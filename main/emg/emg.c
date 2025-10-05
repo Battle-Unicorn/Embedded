@@ -1,12 +1,9 @@
 #include "emg.h"
 #include "esp_log.h"
 #include "math.h"
+#include "time.h"
 
 static const char *TAG = "EMG_SENSOR";
-
-// --- Calibration configuration ---
-#define MVC_CALIBRATION_TIME_S   15     // Calibration time in seconds
-#define ATONIA_THRESHOLD_PCT     0.009f // Atonia threshold: 0.9% of MVC
 
 // --- Global variables ---
 static TaskHandle_t emg_task_handle = NULL;
@@ -88,17 +85,22 @@ float moving_average(float new_sample) {
     return sum / MOVING_AVG_SIZE;
 }
 
-// Convert ADC raw value to millivolts
-float raw_to_mv(int raw_value) {
-    float voltage_mv = 0.0f;
+// Send EMG sample to HTTP client queue
+static void send_emg_sample_to_queue(float envelope_value) {
+    emg_sample_t sample;
     
-    if (adc_calibrated) {
-        voltage_mv = esp_adc_cal_raw_to_voltage(raw_value, &adc_chars);
-    } else {
-        voltage_mv = (float)raw_value * (3300.0f / 4095.0f);
+    // Get current timestamp in ISO 8601 format
+    time_t now;
+    time(&now);
+    struct tm *timeinfo = gmtime(&now);
+    strftime(sample.timestamp, sizeof(sample.timestamp), "%Y-%m-%dT%H:%M:%SZ", timeinfo);
+    
+    sample.envelope = envelope_value;
+    
+    BaseType_t result = http_client_send_emg_sample(&sample);
+    if (result != pdTRUE) {
+        ESP_LOGW(TAG, "Failed to send EMG sample to queue");
     }
-    
-    return voltage_mv;
 }
 
 // --- Simple MVC calibration routine ---
@@ -146,7 +148,6 @@ static void perform_mvc_calibration(void) {
     calibration_in_progress = false;
 
     ESP_LOGI(TAG, "Calibration complete. Samples: %d", samples_collected);
-    ESP_LOGI(TAG, "Top peaks: %.3f, %.3f, %.3f", max_envelope, second_max, third_max);
     ESP_LOGI(TAG, "MVC (100%%) = %.3f", mvc_value_envelope);
     ESP_LOGI(TAG, "Atonia threshold = %.4f (0.9%% of MVC)", mvc_value_envelope * ATONIA_THRESHOLD_PCT);
 }
@@ -192,32 +193,29 @@ static void emg_task(void *pvParameters) {
         float filtered = moving_average(bandpassed);
         float current_envelope = calculate_envelope(filtered);
 
-        // --- Atonia detection ---
-        if (calibration_done && mvc_value_envelope > 0) {
-            float atonia_threshold = mvc_value_envelope * ATONIA_THRESHOLD_PCT;
-            atonia_flag = (current_envelope <= atonia_threshold);
-        }
-
-        // --- Logging every 1 second ---
+        // --- Send sample to HTTP queue every second ---
         sample_count++;
         if (xTaskGetTickCount() - last_log_time >= pdMS_TO_TICKS(1000)) {
+            send_emg_sample_to_queue(current_envelope);
+            
+            // --- Atonia detection ---
+            if (calibration_done && mvc_value_envelope > 0) {
+                float atonia_threshold = mvc_value_envelope * ATONIA_THRESHOLD_PCT;
+                atonia_flag = (current_envelope <= atonia_threshold);
+            }
+
             float envelope_percent = 0.0f;
             if (calibration_done && mvc_value_envelope > 0) {
                 envelope_percent = (current_envelope / mvc_value_envelope) * 100.0f;
             }
 
-            ESP_LOGI(TAG, "Raw: %d, Envelope: %.3f (%.2f%%), Atonia: %s", 
-                     raw_sample, 
+            ESP_LOGI(TAG, "Envelope: %.3f (%.2f%%), Atonia: %s", 
                      current_envelope,
                      envelope_percent,
                      atonia_flag ? "YES" : "NO");
             
-            if (calibration_done) {
-                ESP_LOGI(TAG, "MVC: %.3f, Threshold: %.4f", 
-                         mvc_value_envelope, mvc_value_envelope * ATONIA_THRESHOLD_PCT);
-            }
-            
             last_log_time = xTaskGetTickCount();
+            sample_count = 0;
         }
     }
 }
