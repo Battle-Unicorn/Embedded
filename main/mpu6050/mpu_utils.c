@@ -23,6 +23,7 @@
 #endif
 
 // Global variables
+float temp = 0;
 int steps = 0;
 bool sleep_flag = false;
 static const char *TAG = "mpu6050_task";

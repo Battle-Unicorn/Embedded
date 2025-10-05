@@ -11,6 +11,9 @@
 #include "esp_http_client.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "esp_wifi.h"
+#include "esp_err.h"
+#include "time.h"
 
 /* Tag used for ESP logging */
 static const char *TAG = "http_client";
@@ -18,107 +21,25 @@ static const char *TAG = "http_client";
 /* Server configuration */
 #define SERVER_IP      "192.168.8.102"
 #define SERVER_PORT    8080
-#define SERVER_PATH    "/embedded/data"
+#define FLAGS_ENDPOINT    "/embedded/flags"
 #define POST_INTERVAL_MS (30000) /* 30 seconds */
+
+extern bool atonia_flag;
+extern bool sleep_flag;
+extern float temp;
+
 
 /* Task handle for the background POST task */
 static TaskHandle_t s_http_task_handle = NULL;
 
-/* The JSON payload to send (exact payload provided by user).
-   Error codes and comments are English. */
-static const char s_payload[] =
-"{\n"
-"  \"device_id\": \"Dev_001\",\n"
-"  \"timestamp\": \"2025-09-24T23:45:12Z\",\n"
-"  \"sensor_data\": {\n"
-"    \"plethysmometer\": [\n"
-"      {\"timestamp\": \"2025-09-24T23:44:43Z\", \"heart_rate\": 63, \"spo2\": 98.1},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:44Z\", \"heart_rate\": 64, \"spo2\": 97.9},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:45Z\", \"heart_rate\": 63, \"spo2\": 98.0},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:46Z\", \"heart_rate\": 65, \"spo2\": 97.8},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:47Z\", \"heart_rate\": 64, \"spo2\": 98.1},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:48Z\", \"heart_rate\": 63, \"spo2\": 98.2},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:49Z\", \"heart_rate\": 65, \"spo2\": 97.9},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:50Z\", \"heart_rate\": 66, \"spo2\": 98.0},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:51Z\", \"heart_rate\": 64, \"spo2\": 98.1},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:52Z\", \"heart_rate\": 63, \"spo2\": 98.3},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:53Z\", \"heart_rate\": 65, \"spo2\": 97.8},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:54Z\", \"heart_rate\": 64, \"spo2\": 98.2},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:55Z\", \"heart_rate\": 66, \"spo2\": 97.9},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:56Z\", \"heart_rate\": 67, \"spo2\": 98.0},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:57Z\", \"heart_rate\": 65, \"spo2\": 98.1},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:58Z\", \"heart_rate\": 64, \"spo2\": 97.9},\n"
-"      {\"timestamp\": \"2025-09-24T23:44:59Z\", \"heart_rate\": 63, \"spo2\": 98.2},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:00Z\", \"heart_rate\": 65, \"spo2\": 98.1},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:01Z\", \"heart_rate\": 66, \"spo2\": 97.8},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:02Z\", \"heart_rate\": 64, \"spo2\": 98.0},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:03Z\", \"heart_rate\": 65, \"spo2\": 98.1},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:04Z\", \"heart_rate\": 66, \"spo2\": 97.9},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:05Z\", \"heart_rate\": 63, \"spo2\": 98.3},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:06Z\", \"heart_rate\": 64, \"spo2\": 98.2},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:07Z\", \"heart_rate\": 65, \"spo2\": 98.0},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:08Z\", \"heart_rate\": 66, \"spo2\": 98.1},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:09Z\", \"heart_rate\": 67, \"spo2\": 97.8},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:10Z\", \"heart_rate\": 65, \"spo2\": 98.0},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:11Z\", \"heart_rate\": 64, \"spo2\": 98.2},\n"
-"      {\"timestamp\": \"2025-09-24T23:45:12Z\", \"heart_rate\": 63, \"spo2\": 98.1}\n"
-"    ],\n"
-"    \"mpu\": {\n"
-"      \"sleep_flag\": false,\n"
-"      \"samples\": [\n"
-"        {\"timestamp\": \"2025-09-24T23:44:43Z\", \"acceleration\": {\"x\": 0.01, \"y\": -0.02, \"z\": 0.98}, \"rotation\": {\"x\": 0.5, \"y\": 1.2, \"z\": 0.3}, \"temperature\": 37.0},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:44Z\", \"acceleration\": {\"x\": 0.02, \"y\": -0.01, \"z\": 0.97}, \"rotation\": {\"x\": 0.6, \"y\": 1.3, \"z\": 0.4}, \"temperature\": 37.1}\n"
-"      ]\n"
-"    },\n"
-"    \"emg\": {\n"
-"      \"atonia_flag\": false,\n"
-"      \"samples\": [\n"
-"        {\"timestamp\": \"2025-09-24T23:44:43Z\", \"muscle_tone\": 12.5},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:44Z\", \"muscle_tone\": 12.6},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:45Z\", \"muscle_tone\": 12.4},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:46Z\", \"muscle_tone\": 12.7},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:47Z\", \"muscle_tone\": 12.5},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:48Z\", \"muscle_tone\": 12.6},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:49Z\", \"muscle_tone\": 12.7},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:50Z\", \"muscle_tone\": 12.6},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:51Z\", \"muscle_tone\": 12.4},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:52Z\", \"muscle_tone\": 12.5},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:53Z\", \"muscle_tone\": 12.6},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:54Z\", \"muscle_tone\": 12.7},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:55Z\", \"muscle_tone\": 12.5},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:56Z\", \"muscle_tone\": 12.6},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:57Z\", \"muscle_tone\": 12.5},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:58Z\", \"muscle_tone\": 12.7},\n"
-"        {\"timestamp\": \"2025-09-24T23:44:59Z\", \"muscle_tone\": 12.4},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:00Z\", \"muscle_tone\": 12.5},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:01Z\", \"muscle_tone\": 12.6},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:02Z\", \"muscle_tone\": 12.7},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:03Z\", \"muscle_tone\": 12.6},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:04Z\", \"muscle_tone\": 12.5},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:05Z\", \"muscle_tone\": 12.4},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:06Z\", \"muscle_tone\": 12.7},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:07Z\", \"muscle_tone\": 12.6},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:08Z\", \"muscle_tone\": 12.5},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:09Z\", \"muscle_tone\": 12.7},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:10Z\", \"muscle_tone\": 12.6},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:11Z\", \"muscle_tone\": 12.5},\n"
-"        {\"timestamp\": \"2025-09-24T23:45:12Z\", \"muscle_tone\": 12.6}\n"
-"      ]\n"
-"    }\n"
-"  },\n"
-"  \"response\": {\n"
-"    \"status\": \"received\",\n"
-"    \"device_id\": \"Dev_001\",\n"
-"    \"samples_received\": 30,\n"
-"    \"received_at\": \"2025-09-24T23:45:13Z\"\n"
-"  }\n"
-"}\n";
+/* The JSON payload to send */
+static char s_payload[2048] = {0};
 
 /* Helper: build server URL string */
 static void build_url(char *out, size_t out_len)
 {
     /* Format: http://<ip>:<port><path> */
-    snprintf(out, out_len, "http://%s:%d%s", SERVER_IP, SERVER_PORT, SERVER_PATH);
+    snprintf(out, out_len, "http://%s:%d%s", SERVER_IP, SERVER_PORT, FLAGS_ENDPOINT);
 }
 
 /* The background task that repeatedly POSTs the JSON payload */
@@ -151,6 +72,46 @@ static void http_post_task(void *arg)
         if (err != ESP_OK) {
             ESP_LOGW(TAG, "Failed to set header: %s", esp_err_to_name(err));
         }
+        
+        //create JSON payload
+		/*draft:{
+  "device_id": "Dev_001",
+  "timestamp": "2025-09-24T23:45:12Z",
+  "flags": {
+    "sleep_flag": true,
+    "atonia_flag": true
+  },
+  "system_info": {
+    "battery_level": 82,
+    "signal_strength": 89,
+    "device_temperature": 36.9,
+    "last_calibration": "2025-09-24T20:00:00Z"
+    time from time.h
+  }
+}*/
+		wifi_ap_record_t ap_info;
+		esp_err_t ret = esp_wifi_sta_get_ap_info(&ap_info);
+		int8_t rssi = 0;
+		if (ret == ESP_OK) {
+		    rssi = ap_info.rssi; // RSSI w dBm, np. -45
+		    printf("RSSI: %d dBm\n", rssi);
+		} else {
+		    printf("esp_wifi_sta_get_ap_info failed: %d\n", ret);
+		    
+		}        
+		time_t now;
+		time(&now);
+		struct tm *timeinfo = gmtime(&now);
+		char time_str[25];
+		strftime(time_str, sizeof(time_str), "%Y-%m-%dT%H:%M:%SZ", timeinfo);
+				snprintf(s_payload, sizeof(s_payload),
+				 "{\"device_id\":\"Dev_001\",\"timestamp\":\"%s\",\"flags\":{\"sleep_flag\":%s,\"atonia_flag\":%s},"
+				 "\"system_info\":{\"battery_level\":82,\"signal_strength\":%d,\"body_temperature\":%.1f,\"last_calibration\":\"2025-09-24T20:00:00Z\"}}",
+				 time_str,
+				 sleep_flag ? "true" : "false",
+				 atonia_flag ? "true" : "false",
+				 rssi,
+				 temp);
 
         err = esp_http_client_set_post_field(client, s_payload, strlen(s_payload));
         if (err != ESP_OK) {
