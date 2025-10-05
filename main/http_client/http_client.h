@@ -4,12 +4,7 @@
  *  Created on: 4 paź 2025
  *      Author: majorBien
  */
-/*
- * http_client.h
- *
- *  Created on: 4 paź 2025
- *  Author: majorBien
- */
+
 #ifndef HTTP_CLIENT_H
 #define HTTP_CLIENT_H
 

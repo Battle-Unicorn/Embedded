@@ -4,12 +4,7 @@
  *  Created on: 4 paź 2025
  *      Author: majorBien
  */
-/*
- * http_client.c
- *
- *  Created on: 4 paź 2025
- *  Author: majorBien
- */
+
 #include "http_client.h"
 
 #include <string.h>
@@ -42,6 +37,7 @@ static char s_emg_payload[4096] = {0}; /* Larger buffer for EMG data */
 extern bool atonia_flag;
 extern bool sleep_flag;
 extern float temp;
+extern int steps;
 
 /* Helper: build server URL string for different endpoints */
 static void build_url(char *out, size_t out_len, const char *endpoint)
@@ -71,12 +67,13 @@ static void build_flags_payload(void)
     /* Build JSON payload for flags */
     snprintf(s_flags_payload, sizeof(s_flags_payload),
              "{\"device_id\":\"Dev_001\",\"timestamp\":\"%s\",\"flags\":{\"sleep_flag\":%s,\"atonia_flag\":%s},"
-             "\"system_info\":{\"battery_level\":82,\"signal_strength\":%d,\"body_temperature\":%.1f,\"last_calibration\":\"2025-09-24T20:00:00Z\"}}",
+             "\"system_info\":{\"battery_level\":82,\"signal_strength\":%d,\"body_temperature\":%.1f,\"steps\":%d,\"last_calibration\":\"2025-09-24T20:00:00Z\"}}",
              time_str,
              sleep_flag ? "true" : "false",
              atonia_flag ? "true" : "false",
              rssi,
-             temp);
+             temp,
+             steps);  
 }
 
 /* Build EMG JSON payload from samples in queue */

@@ -209,10 +209,10 @@ static void emg_task(void *pvParameters) {
                 envelope_percent = (current_envelope / mvc_value_envelope) * 100.0f;
             }
 
-            ESP_LOGI(TAG, "Envelope: %.3f (%.2f%%), Atonia: %s", 
+ /*           ESP_LOGI(TAG, "Envelope: %.3f (%.2f%%), Atonia: %s", 
                      current_envelope,
                      envelope_percent,
-                     atonia_flag ? "YES" : "NO");
+                     atonia_flag ? "YES" : "NO");*/
             
             last_log_time = xTaskGetTickCount();
             sample_count = 0;
@@ -221,7 +221,7 @@ static void emg_task(void *pvParameters) {
 }
 
 void emg_task_start(void) {
-    xTaskCreate(emg_task, "emg_task", 4096, NULL, 5, &emg_task_handle);
+    xTaskCreate(emg_task, "emg_task", 4096, NULL, 7, &emg_task_handle);
     if (emg_task_handle == NULL) {
         ESP_LOGE(TAG, "Failed to create EMG task");
         return;

@@ -303,7 +303,7 @@ static void max30102_processing_task(void *pvParameters)
         heart_rate = calculate_heart_rate(ir_data_buffer, &r0_autocorrelation, auto_correlationated_data);
 
         // Log sensor data
-/*        ESP_LOGI(TAG, "HR: %d bpm, Corr: %.3f, Temp: %.1f C",
+        ESP_LOGI(TAG, "HR: %d bpm, Corr: %.3f, Temp: %.1f C",
                 heart_rate, pearson_correlation, temperature);
 
         // If IR and RED signals are strongly correlated, compute SpO2
@@ -313,7 +313,7 @@ static void max30102_processing_task(void *pvParameters)
         } else {
             spo2_value = 0.0;
             ESP_LOGW(TAG, "SpO2: skipped (weak correlation: %.3f)", pearson_correlation);
-        }*/
+        }
 
         // Diagnostics every 100 cycles
         static int cycle_count = 0;
@@ -350,7 +350,8 @@ static void max30102_task(void *pvParameters)
 void max_task_start(void)
 {
     // Note: i2cdev_init() should be called once in main application
-    xTaskCreate(max30102_task, "max30102_task", 4096, NULL, 5, NULL);
+    //xTaskCreate(max30102_task, "max30102_task", 4096, NULL, 9, NULL);
+    xTaskCreatePinnedToCore(max30102_task, "max30102_task", 8192, NULL, 9, NULL, 1);
     ESP_LOGI(TAG, "MAX30102 task created");
 }
 
